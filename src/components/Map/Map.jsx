@@ -1,7 +1,6 @@
 import { useContext, useRef } from 'react';
 import { useEffect } from 'react';
 
-import image from '../../assets/map.png';
 import { SizingContext } from '../../context';
 import styles from './Map.module.scss';
 
@@ -18,5 +17,7 @@ export function Map() {
         }
     }, [imageRef, setScale]);
 
-    return <img ref={imageRef} src={image} alt="Map" className={styles.map} />;
+    return (
+        <img ref={imageRef} src="/map.png" alt="Map" className={styles.map} />
+    );
 }

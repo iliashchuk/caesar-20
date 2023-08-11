@@ -1,8 +1,9 @@
+import styles from './Game.module.scss';
+import { Hand } from './components/Hand';
 import { Location } from './components/Location';
 import { Map } from './components/Map';
 import { SizingContext, SizingProvider } from './context';
 import locations from './static/locations.json';
-import styles from './Game.module.scss'
 
 function Game() {
     return (
@@ -18,6 +19,7 @@ function Game() {
                     }
                 </SizingContext.Consumer>
             </div>
+            <Hand />
         </SizingProvider>
     );
 }

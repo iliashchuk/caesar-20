@@ -1,0 +1,12 @@
+.hand {
+    padding: 12px 12px 4px;
+    border-radius: 12px 12px 0px 0px;
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    gap: 4px;
+    transform: translateX(-50%);
+    background-color: papayawhip;
+    z-index: 1;
+}
