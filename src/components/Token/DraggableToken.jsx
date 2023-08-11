@@ -1,6 +1,7 @@
 import { useDraggable } from '@dnd-kit/core';
 
 import { Token } from './Token';
+import styles from './Token.module.scss';
 
 export function DraggableToken({ side, id }) {
     const { attributes, listeners, setNodeRef, transform } = useDraggable({
@@ -14,7 +15,13 @@ export function DraggableToken({ side, id }) {
         : undefined;
 
     return (
-        <div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+        <div
+            className={styles.dragHandle}
+            ref={setNodeRef}
+            style={style}
+            {...listeners}
+            {...attributes}
+        >
             <Token side={side} id={id} />
         </div>
     );

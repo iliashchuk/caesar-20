@@ -2,4 +2,10 @@
     display: block;
     cursor: pointer;
     border-radius: 50%;
+    z-index: 5;
+}
+
+.dragHandle {
+    border-radius: 50%;
+    z-index: 5;
 }

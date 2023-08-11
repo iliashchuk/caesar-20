@@ -5,6 +5,11 @@ import styles from './Token.module.scss';
 
 export function Token({ side, id }) {
     const { locationSize } = useContext(SizingContext);
+
+    if (!locationSize) {
+        return null;
+    }
+
     const imagePath = `/${side}/${id}.png`;
 
     return (
