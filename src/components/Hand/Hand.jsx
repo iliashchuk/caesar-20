@@ -1,14 +1,13 @@
-import { Token } from '../Token';
+import { DraggableToken } from '../Token';
 import styles from './Hand.module.scss';
 
-export function Hand() {
+export function Hand({ tokens }) {
+    console.log(tokens);
     return (
         <div className={styles.hand}>
-            <Token side="caesar" id="swords-2-4" />
-            <Token side="caesar" id="swords-2-4" />
-            <Token side="caesar" id="swords-2-4" />
-            <Token side="caesar" id="swords-2-4" />
-            <Token side="caesar" id="swords-2-4" />
+            {tokens.map((tokenId) => (
+                <DraggableToken key={tokenId} side="caesar" id={tokenId} />
+            ))}
         </div>
     );
 }

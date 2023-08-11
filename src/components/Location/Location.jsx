@@ -1,10 +1,12 @@
+import { useDroppable } from '@dnd-kit/core';
 import { useContext } from 'react';
 
 import { SizingContext } from '../../context';
 import styles from './Location.module.scss';
 
-export function Location({ location }) {
+export function Location({ location, children }) {
     const { locationSize } = useContext(SizingContext);
+    const { setNodeRef } = useDroppable({ id: location.name });
 
     const name = location.name;
 
@@ -18,12 +20,15 @@ export function Location({ location }) {
 
     return (
         <div
+            ref={setNodeRef}
             onClick={() => {
                 alert(location.name);
             }}
             key={name}
             className={styles.location}
             style={style}
-        />
+        >
+            {children}
+        </div>
     );
 }
