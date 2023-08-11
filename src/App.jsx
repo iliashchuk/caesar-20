@@ -1,9 +1,10 @@
 import { useRef } from 'react';
-import './App.css';
-import image from './assets/map.png';
-import locations from './static/locations.json';
 import { useEffect } from 'react';
 import { useState } from 'react';
+
+import './App.module.scss';
+import image from './assets/map.png';
+import locations from './static/locations.json';
 
 function App() {
     const imageRef = useRef(null);

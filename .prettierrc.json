@@ -1,12 +1,10 @@
 {
     "singleQuote": true,
     "tabWidth": 4,
-    "overrides": [
-        {
-            "files": "*.json",
-            "options": {
-                "parser": "json"
-            }
-        }
-    ]
+    "trailingComma": "all",
+    "files.trimTrailingWhitespace": true,
+    "plugins": ["@trivago/prettier-plugin-sort-imports"],
+    "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
+    "importOrderSeparation": true,
+    "importOrderSortSpecifiers": true
 }
