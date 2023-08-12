@@ -4,21 +4,16 @@ import { Token } from './Token';
 import styles from './Token.module.scss';
 
 export function DraggableToken({ side, id }) {
-    const { attributes, listeners, setNodeRef, transform } = useDraggable({
+    const { attributes, listeners, setNodeRef, isDragging } = useDraggable({
         id,
         data: { side, id },
     });
-    const style = transform
-        ? {
-              transform: `translate3d(${transform.x}px, ${transform.y}px, 0)`,
-          }
-        : undefined;
 
     return (
         <div
             className={styles.dragHandle}
             ref={setNodeRef}
-            style={style}
+            style={{ opacity: isDragging ? 0.5 : 1 }}
             {...listeners}
             {...attributes}
         >
