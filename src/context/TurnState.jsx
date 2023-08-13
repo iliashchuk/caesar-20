@@ -10,17 +10,30 @@ function TurnStateProvider({ children }) {
         ['sicilia-numidia']: pompeyInfluence[12],
     });
     const [activeState, setActiveState] = useState({});
-    const [hand, setHand] = useState([caesarInfluence[0], caesarInfluence[6]]);
+    const [payerTokens, setPlayerTokens] = useState(
+        [caesarInfluence[0], caesarInfluence[6]].map((token) => ({
+            ...token,
+            inHand: true,
+        })),
+    );
 
-    function updateActiveState(location, token) {
-        setHand(hand.filter(({ id }) => id !== token.id));
-        setActiveState({ [location]: token });
+    function updateActiveState(location, token, node) {
+        setPlayerTokens(
+            payerTokens.map((playerToken) => {
+                if (playerToken.id === token.id) {
+                    return { ...playerToken, inHand: false };
+                }
+
+                return playerToken;
+            }),
+        );
+        setActiveState({ [location]: { ...token, node } });
     }
 
     return (
         <TurnState.Provider
             value={{
-                hand,
+                payerTokens,
                 establishedState,
                 activeState,
                 updateActiveState,

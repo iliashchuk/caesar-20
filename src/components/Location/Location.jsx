@@ -1,8 +1,9 @@
 import { useDroppable } from '@dnd-kit/core';
 import { useContext, useEffect, useMemo, useState } from 'react';
+import { OutPortal } from 'react-reverse-portal';
 
 import { SizingContext, TurnState } from '../../context';
-import { PlayerToken, Token } from '../Token';
+import { Token } from '../Token';
 import styles from './Location.module.scss';
 
 export function Location({ location }) {
@@ -46,9 +47,12 @@ export function Location({ location }) {
         }
         if (activeLocationToken) {
             return (
-                <PlayerToken
+                <OutPortal
+                    node={activeLocationToken.portalNode}
                     rotation={flipped ? location.angle + 180 : location.angle}
-                    {...activeLocationToken}
+                    toggleFlipped={() => {
+                        setFlipped(!flipped);
+                    }}
                 />
             );
         }
@@ -58,12 +62,6 @@ export function Location({ location }) {
         flipped,
         location.angle,
     ]);
-
-    const handleTokenRightClick = (e) => {
-        e.preventDefault();
-
-        setFlipped(!flipped);
-    };
 
     return (
         <div
@@ -75,7 +73,7 @@ export function Location({ location }) {
             className={styles.location}
             style={style}
         >
-            <div onContextMenu={handleTokenRightClick}>{childToken}</div>
+            {childToken}
         </div>
     );
 }

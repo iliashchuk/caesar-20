@@ -7,12 +7,12 @@ import {
 
 import { PlayerToken } from './PlayerToken';
 
-export function PortalReadyPlayerToken({ token, ihHand }) {
+export function PortalReadyPlayerToken({ token, inHand }) {
     const node = useMemo(() => createHtmlPortalNode(), []);
 
     return (
         <>
-            {ihHand && <OutPortal node={node} />}
+            {inHand && <OutPortal node={node} />}
             <InPortal node={node}>
                 <PlayerToken {...token} portalNode={node} />
             </InPortal>
