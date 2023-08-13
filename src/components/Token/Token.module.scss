@@ -1,14 +1,14 @@
 .token {
     display: block;
-    cursor: pointer;
     border-radius: 50%;
-    border: 4px groove gold;
-    z-index: 5;
+    // border: 4px solid gold;
+    z-index: 4;
     box-sizing: border-box;
-    transform: scale(1.03);
+    scale: 1.03;
 }
 
 .dragHandle {
     border-radius: 50%;
+    cursor: pointer;
     z-index: 5;
 }

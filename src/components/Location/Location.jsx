@@ -2,7 +2,7 @@ import { useDroppable } from '@dnd-kit/core';
 import { useContext, useEffect, useMemo, useState } from 'react';
 
 import { SizingContext, TurnState } from '../../context';
-import { DraggableToken, Token } from '../Token';
+import { PlayerToken, Token } from '../Token';
 import styles from './Location.module.scss';
 
 export function Location({ location }) {
@@ -37,18 +37,27 @@ export function Location({ location }) {
 
     const childToken = useMemo(() => {
         if (establishedLocationToken) {
-            return <Token side="caesar" id={establishedLocationToken.id} />;
+            return (
+                <Token
+                    rotation={flipped ? location.angle + 180 : location.angle}
+                    {...establishedLocationToken}
+                />
+            );
         }
         if (activeLocationToken) {
-            return <DraggableToken side="caesar" id={activeLocationToken.id} />;
+            return (
+                <PlayerToken
+                    rotation={flipped ? location.angle + 180 : location.angle}
+                    {...activeLocationToken}
+                />
+            );
         }
-    }, [establishedLocationToken, activeLocationToken]);
-    const tokenStyles = {
-        transform: `rotate(${
-            flipped ? location.angle + 180 : location.angle
-        }deg)`,
-        transition: 'all .3s ease-in',
-    };
+    }, [
+        establishedLocationToken,
+        activeLocationToken,
+        flipped,
+        location.angle,
+    ]);
 
     const handleTokenRightClick = (e) => {
         e.preventDefault();
@@ -66,9 +75,7 @@ export function Location({ location }) {
             className={styles.location}
             style={style}
         >
-            <div onContextMenu={handleTokenRightClick} style={tokenStyles}>
-                {childToken}
-            </div>
+            <div onContextMenu={handleTokenRightClick}>{childToken}</div>
         </div>
     );
 }

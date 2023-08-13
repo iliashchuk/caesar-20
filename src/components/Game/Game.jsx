@@ -55,9 +55,6 @@ function Game() {
                     }
                 </SizingContext.Consumer>
             </div>
-            <DragOverlay>
-                {draggedToken && <Token {...draggedToken}></Token>}
-            </DragOverlay>
             <Hand />
         </DndContext>
     );

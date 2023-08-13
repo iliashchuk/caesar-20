@@ -203,7 +203,7 @@
         "size": 0.028125,
         "angle": 49.1,
         "type": "ship",
-        "name": "numidia-sicilia"
+        "name": "sicilia-numidia"
     },
     {
         "x": 0.44895833333333335,
@@ -263,7 +263,7 @@
         "size": 0.028125,
         "angle": -73.1,
         "type": "sword",
-        "name": "africa-numidia"
+        "name": "numidia-africa"
     },
     {
         "x": 0.4479166666666667,

@@ -1,2 +1,2 @@
 export * from './Token';
-export * from './DraggableToken';
+export * from './PlayerToken';
