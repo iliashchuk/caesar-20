@@ -12,10 +12,10 @@ export function PortalReadyPlayerToken({ token, inHand }) {
 
     return (
         <>
-            {inHand && <OutPortal node={node} />}
             <InPortal node={node}>
                 <PlayerToken {...token} portalNode={node} />
             </InPortal>
+            {inHand && <OutPortal node={node} rotation={0} />}
         </>
     );
 }

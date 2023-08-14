@@ -24,7 +24,7 @@ function TurnStateProvider({ children }) {
                     return { ...playerToken, inHand: false };
                 }
 
-                return playerToken;
+                return { ...playerToken, inHand: true };
             }),
         );
         setActiveState({ [location]: { ...token, node } });

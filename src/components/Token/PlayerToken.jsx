@@ -1,4 +1,5 @@
 import { useDraggable } from '@dnd-kit/core';
+import { CSS } from '@dnd-kit/utilities';
 
 import { Token } from './Token';
 import styles from './Token.module.scss';
@@ -26,9 +27,7 @@ export function PlayerToken({
         }
     };
 
-    const transformStyle = transform
-        ? `translate3d(${transform.x}px, ${transform.y}px, 0)`
-        : '';
+    const transformStyle = transform ? CSS.Translate.toString(transform) : '';
 
     return (
         <div

@@ -8,7 +8,6 @@ export function Token({ side, id, rotation, isDragging }) {
     const [angle, setAngle] = useState(0);
     const [scale, setScale] = useState(1);
     const [shadow, setShadow] = useState('');
-    const [clicks, setClicks] = useState(0);
 
     useEffect(() => {
         const timeout = setTimeout(() => {
@@ -48,7 +47,6 @@ export function Token({ side, id, rotation, isDragging }) {
                     rotate: `${angle}deg`,
                     transition: 'rotate 0.4s',
                 }}
-                onMouseDown={() => setClicks(clicks + 1)}
                 alt={`${side}-${id}`}
                 className={styles.token}
                 width={locationSize}
