@@ -1,4 +1,5 @@
 import { useDroppable } from '@dnd-kit/core';
+import classnames from 'classnames';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { OutPortal } from 'react-reverse-portal';
 
@@ -10,13 +11,14 @@ export function Location({ location }) {
     const { locationSize } = useContext(SizingContext);
     const { activeState, establishedState } = useContext(TurnState);
     const [flipped, setFlipped] = useState(false);
+    const [disabled, setDisabled] = useState(true);
 
     const establishedLocationToken = establishedState[location.name];
     const activeLocationToken = activeState[location.name];
 
-    const { setNodeRef } = useDroppable({
+    const { setNodeRef, active } = useDroppable({
         id: location.name,
-        disabled: !!establishedLocationToken,
+        disabled,
     });
 
     const translateFunction = `translate(-${locationSize / 2}px,-${
@@ -35,6 +37,20 @@ export function Location({ location }) {
             setFlipped(false);
         }
     }, [establishedLocationToken, activeLocationToken, setFlipped]);
+
+    const draggedTokenType = active?.data.current.type;
+
+    useEffect(() => {
+        if (establishedLocationToken || !draggedTokenType) {
+            setDisabled(true);
+            return;
+        }
+
+        if (draggedTokenType === location.type) {
+            setDisabled(false);
+            return;
+        }
+    }, [draggedTokenType, establishedLocationToken, location.type]);
 
     const childToken = useMemo(() => {
         if (establishedLocationToken) {
@@ -68,7 +84,9 @@ export function Location({ location }) {
                 alert(location.name);
             }}
             key={location.name}
-            className={styles.location}
+            className={classnames(styles.location, {
+                [styles.available]: !disabled,
+            })}
             style={style}
         >
             {childToken}
