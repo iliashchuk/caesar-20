@@ -31,7 +31,7 @@ export function Token({ side, id, rotation, isDragging }) {
         return null;
     }
 
-    const imagePath = `/${side}/${id}.png`;
+    const imagePath = `/influence/${id}.png`;
 
     return (
         <div
@@ -46,6 +46,10 @@ export function Token({ side, id, rotation, isDragging }) {
                 style={{
                     rotate: `${angle}deg`,
                     transition: 'rotate 0.4s',
+                    filter:
+                        side === 'pompey'
+                            ? 'hue-rotate(220deg) saturate(0.4) brightness(1.25)'
+                            : '',
                 }}
                 alt={`${side}-${id}`}
                 className={styles.token}
