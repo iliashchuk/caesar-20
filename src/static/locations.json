@@ -139,7 +139,7 @@
         "size": 0.028125,
         "angle": 54.7,
         "type": "sword",
-        "name": "hispania_citerior-gallia"
+        "name": "gallia-hispania_citerior"
     },
     {
         "x": 0.10416666666666667,
@@ -231,7 +231,7 @@
         "size": 0.028125,
         "angle": -36.3,
         "type": "shield",
-        "name": "sardinia-gallia"
+        "name": "gallia-sardinia"
     },
     {
         "x": 0.35833333333333334,

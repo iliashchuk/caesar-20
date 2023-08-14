@@ -10,3 +10,26 @@
     cursor: pointer;
     z-index: 5;
 }
+
+.token3dContainer {
+    border-radius: 50%;
+    position: relative;
+    transform: translate(-1.5px, -1.5px);
+    &::after {
+        content: '';
+        width: 100%;
+        height: 100%;
+        top: 3px;
+        left: 3px;
+        position: absolute;
+        background: conic-gradient(
+            from 163deg at 70% 40%,
+            #151515,
+            #151515,
+            #858585,
+            #151515
+        );
+        z-index: -1;
+        border-radius: inherit;
+    }
+}

@@ -13,7 +13,7 @@ export function PortalReadyPlayerToken({ token, inHand }) {
     return (
         <>
             <InPortal node={node}>
-                <PlayerToken {...token} portalNode={node} />
+                <PlayerToken token={token} portalNode={node} />
             </InPortal>
             {inHand && <OutPortal node={node} rotation={0} />}
         </>

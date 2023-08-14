@@ -1,22 +1,14 @@
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
 
-import { Token } from './Token';
+import { MovableToken } from './MovableToken';
 import styles from './Token.module.scss';
 
-export function PlayerToken({
-    id,
-    side,
-    type,
-    power,
-    rotation,
-    portalNode,
-    toggleFlipped,
-}) {
+export function PlayerToken({ token, rotation, portalNode, toggleFlipped }) {
     const { attributes, listeners, setNodeRef, isDragging, transform } =
         useDraggable({
-            id,
-            data: { side, id, type, power, portalNode },
+            id: token.id,
+            data: { ...token, portalNode },
         });
 
     const handleTokenRightClick = (e) => {
@@ -34,15 +26,16 @@ export function PlayerToken({
             onContextMenu={handleTokenRightClick}
             className={styles.dragHandle}
             ref={setNodeRef}
-            style={{ transform: transformStyle }}
+            style={{
+                transform: transformStyle,
+            }}
             {...listeners}
             {...attributes}
         >
-            <Token
+            <MovableToken
                 rotation={rotation}
-                isDragging={isDragging}
-                side={side}
-                id={id}
+                isMoving={isDragging}
+                token={token}
             />
         </div>
     );

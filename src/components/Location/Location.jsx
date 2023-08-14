@@ -38,12 +38,10 @@ export function Location({ location }) {
 
     const childToken = useMemo(() => {
         if (establishedLocationToken) {
-            return (
-                <Token
-                    rotation={flipped ? location.angle + 180 : location.angle}
-                    {...establishedLocationToken}
-                />
-            );
+            const rotate =
+                (flipped ? location.angle + 180 : location.angle) + 'deg';
+
+            return <Token style={{ rotate }} {...establishedLocationToken} />;
         }
         if (activeLocationToken) {
             return (

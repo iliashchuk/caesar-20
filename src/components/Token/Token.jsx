@@ -1,56 +1,44 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useMemo } from 'react';
 
 import { SizingContext } from '../../context/Sizing';
 import styles from './Token.module.scss';
 
-export function Token({ side, id, rotation, isDragging }) {
+function getImagePath(side, file) {
+    let directory = '';
+
+    switch (side) {
+        case 'pompey':
+            directory = '/influence';
+            break;
+        case 'caesar':
+            directory = '/influence';
+            break;
+        case 'bonus':
+            directory = '/bonus';
+            break;
+    }
+
+    return `${directory}/${file}.png`;
+}
+
+export function Token({ side, id, style }) {
     const { locationSize } = useContext(SizingContext);
-    const [angle, setAngle] = useState(0);
-    const [scale, setScale] = useState(1);
-    const [shadow, setShadow] = useState('');
 
-    useEffect(() => {
-        const timeout = setTimeout(() => {
-            if (isDragging) {
-                setAngle(0);
-                setScale(1.3);
-                setShadow('8px 6px #000000aa');
-            } else {
-                setAngle(rotation);
-                setScale(1);
-                setShadow('');
-            }
-        }, 0);
-
-        return () => {
-            clearTimeout(timeout);
-        };
-    }, [rotation, isDragging, setAngle]);
+    const imagePath = useMemo(() => getImagePath(side, id), [side, id]);
 
     if (!locationSize) {
         return null;
     }
 
-    const imagePath = `/influence/${id}.png`;
+    const filter =
+        side === 'pompey'
+            ? 'hue-rotate(220deg) saturate(0.4) brightness(1.25)'
+            : '';
 
     return (
-        <div
-            style={{
-                borderRadius: '50%',
-                boxShadow: shadow,
-                transition: 'box-shadow 0.5s, scale 0.5s',
-                scale: `${scale}`,
-            }}
-        >
+        <div className={styles.token3dContainer}>
             <img
-                style={{
-                    rotate: `${angle}deg`,
-                    transition: 'rotate 0.4s',
-                    filter:
-                        side === 'pompey'
-                            ? 'hue-rotate(220deg) saturate(0.4) brightness(1.25)'
-                            : '',
-                }}
+                style={{ filter, ...style }}
                 alt={`${side}-${id}`}
                 className={styles.token}
                 width={locationSize}
