@@ -1,4 +1,5 @@
-import { createContext, useState } from 'react';
+import { createContext, useEffect, useState } from 'react';
+import { io } from 'socket.io-client';
 
 import bonuses from '../static/bonuses.json';
 import caesarInfluence from '../static/caesar-influence.json';
@@ -6,21 +7,11 @@ import pompeyInfluence from '../static/pompey-influence.json';
 
 const TurnState = createContext();
 
+const socket = io('http://localhost:3000');
+
 function TurnStateProvider({ children }) {
-    const [establishedState, setEstablishedState] = useState({
-        ['sicilia-numidia']: pompeyInfluence[12],
-        ['asia']: bonuses[2],
-        ['italia']: bonuses[0],
-        ['gallia']: { side: 'pompey', id: 'backside' },
-        ['aegyptus']: { side: 'caesar', id: 'control' },
-        ['syria']: { side: 'caesar', id: 'control' },
-        ['aegyptus-syria']: { side: 'caesar', id: 'control' },
-        ['hispania_citerior']: { side: 'pompey', id: 'control' },
-        ['gallia-gallia_cisalpina']: pompeyInfluence[5],
-        ['gallia-sardinia']: pompeyInfluence[11],
-        ['gallia-hispania_citerior']: { side: 'pompey', id: 'control' },
-        ['hispania_citerior-hispania_ulterior']: pompeyInfluence[10],
-    });
+    const [establishedState, setEstablishedState] = useState([]);
+
     const [activeState, setActiveState] = useState({});
     const [payerTokens, setPlayerTokens] = useState(
         [caesarInfluence[0], caesarInfluence[6]].map((token) => ({
@@ -28,6 +19,16 @@ function TurnStateProvider({ children }) {
             inHand: true,
         })),
     );
+
+    useEffect(() => {
+        socket.on('connect', () => {
+            socket.emit('ready');
+        });
+
+        socket.on('established', (state) => {
+            setEstablishedState(state);
+        });
+    }, []);
 
     function updateActiveState(location, token, node) {
         setPlayerTokens(
@@ -40,6 +41,7 @@ function TurnStateProvider({ children }) {
             }),
         );
         setActiveState({ [location]: { ...token, node } });
+        socket.emit('token', { [location]: { ...token, node } });
     }
 
     return (
