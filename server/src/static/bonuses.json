@@ -1,0 +1,6 @@
+[
+    { "side": "bonus", "id": "senate" },
+    { "side": "bonus", "id": "strength" },
+    { "side": "bonus", "id": "wealth" },
+    { "side": "bonus", "id": "tactics" }
+]
