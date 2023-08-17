@@ -1,6 +1,13 @@
 import { Server } from "socket.io";
-import pompeyInfluence from "./static/pompey-influence.json" assert { type: "json" };
-import bonuses from "./static/bonuses.json" assert { type: "json" };
+import { Game } from "./Game.js";
+
+function shortenId(id: string) {
+    return id.slice(0, 8);
+}
+
+function logEmit(msg) {
+    console.info("EMITTING: ", msg);
+}
 
 const io = new Server({
     cors: {
@@ -11,32 +18,38 @@ const io = new Server({
     },
 });
 
-let establishedState = {
-    ["sicilia-numidia"]: pompeyInfluence[12],
-    ["asia"]: bonuses[2],
-    ["italia"]: bonuses[0],
-    ["gallia"]: { side: "pompey", id: "backside" },
-    ["aegyptus"]: { side: "caesar", id: "control" },
-    ["syria"]: { side: "caesar", id: "control" },
-    ["aegyptus-syria"]: { side: "caesar", id: "control" },
-    ["hispania_citerior"]: { side: "pompey", id: "control" },
-    ["gallia-gallia_cisalpina"]: pompeyInfluence[5],
-    ["gallia-sardinia"]: pompeyInfluence[11],
-    ["gallia-hispania_citerior"]: { side: "pompey", id: "control" },
-    ["hispania_citerior-hispania_ulterior"]: pompeyInfluence[10],
-};
+const game = new Game();
 
-io.on("connection", (socket) => {
-    console.log("a user connected: " + socket.id);
+io.on("connection", async (socket) => {
+    const user = shortenId(socket.handshake.auth.user);
 
-    socket.on("ready", () => {
-        console.log("emiting establish");
-        socket.emit("established", establishedState);
+    console.log(`a user ${user} connected by socket ${socket.id} `);
+
+    if (!game.ready) {
+        game.verifyOrAddPlayer(user);
+    }
+
+    console.log("Game", game.players);
+
+    if (game.ready) {
+        logEmit("game-ready");
+        io.emit("game-ready", game.state);
+        socket.emit("side-assigned", game.players[user]);
+    }
+
+    socket.on("disconnect", () => {
+        console.log("user disconnected", socket.id);
+        game.disconnectPlayer(user);
+        console.log(game.players);
+        if (!game.ready) {
+            logEmit("game-paused");
+            socket.broadcast.emit("game-paused");
+        }
     });
 
     socket.on("token", (data) => {
-        establishedState = { ...establishedState, ...data };
-        socket.broadcast.emit("established", establishedState);
+        game.state = { ...game.state, ...data };
+        socket.broadcast.emit("established", game.state);
     });
 });
 

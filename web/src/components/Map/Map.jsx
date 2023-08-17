@@ -1,10 +1,11 @@
+import classNames from 'classnames';
 import { useContext, useRef } from 'react';
 import { useEffect } from 'react';
 
 import { SizingContext } from '../../context';
 import styles from './Map.module.scss';
 
-export function Map() {
+export function Map({ blur }) {
     const { setScale } = useContext(SizingContext);
     const imageRef = useRef(null);
 
@@ -18,6 +19,11 @@ export function Map() {
     }, [imageRef, setScale]);
 
     return (
-        <img ref={imageRef} src="/map.png" alt="Map" className={styles.map} />
+        <img
+            ref={imageRef}
+            src="/map.png"
+            alt="Map"
+            className={classNames(styles.map, { [styles.blur]: blur })}
+        />
     );
 }

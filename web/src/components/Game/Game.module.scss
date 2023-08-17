@@ -4,3 +4,13 @@
     width: fit-content;
     margin: auto;
 }
+
+.waiting {
+    color: white;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    line-height: 1;
+    transform: translate(-50%, -200%);
+    text-shadow: 1px 1px 2px black;
+}

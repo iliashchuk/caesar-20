@@ -1,12 +1,15 @@
-import Game from './components/Game/Game';
-import { SizingProvider, TurnStateProvider } from './context';
+import { Game } from './components/Game';
+import { GameContextProvider, SizingProvider } from './context';
+import { UserProvider } from './context/User';
 
 export function App() {
     return (
-        <SizingProvider>
-            <TurnStateProvider>
-                <Game />
-            </TurnStateProvider>
-        </SizingProvider>
+        <UserProvider>
+            <SizingProvider>
+                <GameContextProvider>
+                    <Game />
+                </GameContextProvider>
+            </SizingProvider>
+        </UserProvider>
     );
 }

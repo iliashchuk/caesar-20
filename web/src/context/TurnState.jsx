@@ -1,17 +1,13 @@
-import { createContext, useEffect, useState } from 'react';
-import { io } from 'socket.io-client';
+import { createContext, useContext, useEffect, useState } from 'react';
 
-import bonuses from '../static/bonuses.json';
 import caesarInfluence from '../static/caesar-influence.json';
-import pompeyInfluence from '../static/pompey-influence.json';
+import { GameContext } from './GameContext';
 
 const TurnState = createContext();
 
-const socket = io('http://localhost:3000');
-
-function TurnStateProvider({ children }) {
-    const [establishedState, setEstablishedState] = useState([]);
-
+function TurnStateProvider({ initialState, children }) {
+    const { socket } = useContext(GameContext);
+    const [establishedState, setEstablishedState] = useState(initialState);
     const [activeState, setActiveState] = useState({});
     const [payerTokens, setPlayerTokens] = useState(
         [caesarInfluence[0], caesarInfluence[6]].map((token) => ({
@@ -21,14 +17,8 @@ function TurnStateProvider({ children }) {
     );
 
     useEffect(() => {
-        socket.on('connect', () => {
-            socket.emit('ready');
-        });
-
-        socket.on('established', (state) => {
-            setEstablishedState(state);
-        });
-    }, []);
+        socket.on('established', state => setEstablishedState(state))
+    }, [socket]);
 
     function updateActiveState(location, token, node) {
         setPlayerTokens(
