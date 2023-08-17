@@ -1,0 +1,11 @@
+.playerUi {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    z-index: 2;
+}

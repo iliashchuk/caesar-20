@@ -21,7 +21,7 @@ function getImagePath(side, file) {
     return `${directory}/${file}.png`;
 }
 
-export function Token({ side, id, style }) {
+export function Token({ side, id, style, make3d = true }) {
     const { locationSize } = useContext(SizingContext);
 
     const imagePath = useMemo(() => getImagePath(side, id), [side, id]);
@@ -35,16 +35,20 @@ export function Token({ side, id, style }) {
             ? 'hue-rotate(220deg) saturate(0.4) brightness(1.25)'
             : '';
 
-    return (
-        <div className={styles.token3dContainer}>
-            <img
-                style={{ filter, ...style }}
-                alt={`${side}-${id}`}
-                className={styles.token}
-                width={locationSize}
-                height={locationSize}
-                src={imagePath}
-            />
-        </div>
+    const imageElement = (
+        <img
+            style={{ filter, ...style }}
+            alt={`${side}-${id}`}
+            className={styles.token}
+            width={locationSize}
+            height={locationSize}
+            src={imagePath}
+        />
     );
+
+    if (!make3d) {
+        return imageElement;
+    }
+
+    return <div className={styles.token3dContainer}>{imageElement}</div>;
 }

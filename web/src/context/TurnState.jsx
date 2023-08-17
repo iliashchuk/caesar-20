@@ -7,8 +7,11 @@ const TurnState = createContext();
 
 function TurnStateProvider({ initialState, children }) {
     const { socket } = useContext(GameContext);
+
     const [establishedState, setEstablishedState] = useState(initialState);
     const [activeState, setActiveState] = useState({});
+    const [playersTurn, setPlayersTurn] = useState(true);
+    const [tokensRemaining, setTokensRemaining] = useState(19);
     const [payerTokens, setPlayerTokens] = useState(
         [caesarInfluence[0], caesarInfluence[6]].map((token) => ({
             ...token,
@@ -17,7 +20,7 @@ function TurnStateProvider({ initialState, children }) {
     );
 
     useEffect(() => {
-        socket.on('established', state => setEstablishedState(state))
+        socket.on('established', (state) => setEstablishedState(state));
     }, [socket]);
 
     function updateActiveState(location, token, node) {
@@ -31,13 +34,20 @@ function TurnStateProvider({ initialState, children }) {
             }),
         );
         setActiveState({ [location]: { ...token, node } });
-        socket.emit('token', { [location]: { ...token, node } });
+    }
+
+    function endTurn() {
+        setPlayersTurn(false);
+        socket.emit('end-turn', activeState);
     }
 
     return (
         <TurnState.Provider
             value={{
+                endTurn,
+                playersTurn,
                 payerTokens,
+                tokensRemaining,
                 establishedState,
                 activeState,
                 updateActiveState,

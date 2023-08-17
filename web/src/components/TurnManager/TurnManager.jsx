@@ -6,9 +6,12 @@ import { createCircleCollisionDetectionForRadius } from '../../static/circleColl
 import locations from '../../static/locations.json';
 import { Hand } from '../Hand';
 import { Location } from '../Location';
+import { TurnButton } from '../TurnButton';
+import { TokenCounter } from '../TokenCounter';
+import styles from './TurnManager.module.scss';
 
 export function TurnManager() {
-    const { scale, locationRadius } = useContext(SizingContext);
+    const { scale, locationRadius, locationSize } = useContext(SizingContext);
     const { updateActiveState } = useContext(TurnState);
 
     const collisionDetection = useMemo(
@@ -35,11 +38,18 @@ export function TurnManager() {
             collisionDetection={collisionDetection}
             onDragEnd={handleDragEnd}
         >
+            <div
+                style={{ height: locationSize + 24 }}
+                className={styles.playerUi}
+            >
+                <TokenCounter />
+                <Hand />
+                <TurnButton />
+            </div>
             {scale &&
                 locations.map((location) => (
                     <Location key={location.name} location={location} />
                 ))}
-            <Hand />
         </DndContext>
     );
 }

@@ -1,0 +1,16 @@
+.turnButton {
+    border-radius: 50%;
+    border: 2px solid #222222;
+    background-color: gold;
+    color: #222222;
+    font-weight: bold;
+    padding: 0;
+    text-align: center;
+    outline: none;
+    aspect-ratio: 1;
+
+    &:disabled {
+        filter: saturate(0.6);
+        cursor: not-allowed;
+    }
+}
