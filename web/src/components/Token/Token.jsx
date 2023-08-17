@@ -3,7 +3,7 @@ import { useContext, useMemo } from 'react';
 import { SizingContext } from '../../context/Sizing';
 import styles from './Token.module.scss';
 
-function getImagePath(side, file) {
+function getImagePath(side, id) {
     let directory = '';
 
     switch (side) {
@@ -16,6 +16,12 @@ function getImagePath(side, file) {
         case 'bonus':
             directory = '/bonus';
             break;
+    }
+
+    let file = id;
+
+    if (['wild-2-2-a', 'wild-2-2-b'].includes(id)) {
+        file = 'wild-2-2';
     }
 
     return `${directory}/${file}.png`;

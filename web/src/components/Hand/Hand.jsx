@@ -5,11 +5,11 @@ import { PortalReadyPlayerToken } from '../Token';
 import styles from './Hand.module.scss';
 
 export function Hand() {
-    const { payerTokens } = useContext(TurnState);
+    const { playerHand } = useContext(TurnState);
 
     return (
         <div className={styles.hand}>
-            {payerTokens.map((token) => (
+            {playerHand.map((token) => (
                 <PortalReadyPlayerToken
                     key={token.id}
                     token={token}

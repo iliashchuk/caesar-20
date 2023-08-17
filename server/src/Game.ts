@@ -1,4 +1,5 @@
-import { Side } from "./types.js";
+import { Player } from "./Player.js";
+import { PlayerInfluence, Side } from "./types.js";
 import { getRandomBonusesForProvinces } from "./utils.js";
 
 export class Game {
@@ -7,7 +8,7 @@ export class Game {
     }
 
     state: Record<string, any>;
-    players: Record<string, Side> = {};
+    players: Record<string, Player> = {};
     playersConnected: Record<string, boolean> = {};
 
     verifyOrAddPlayer = (user: string) => {
@@ -19,11 +20,11 @@ export class Game {
         }
 
         if (numberOfPlayers === 0) {
-            this.players[user] = Side.CAESAR;
+            this.players[user] = new Player(Side.CAESAR);
             return true;
         }
 
-        this.players[user] = Side.POMPEY;
+        this.players[user] = new Player(Side.POMPEY);
     };
 
     disconnectPlayer = (user: string) => {

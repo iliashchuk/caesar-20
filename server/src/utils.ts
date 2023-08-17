@@ -1,8 +1,8 @@
 import { provincesBarringItalia } from "./static/provinces.js";
 
-export function shuffle(array: string[]) {
+export function shuffle<T>(array: T[]): T[] {
     let m = array.length,
-        t: string,
+        t: T,
         i: number;
 
     while (m) {

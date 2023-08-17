@@ -1,22 +1,21 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
-import caesarInfluence from '../static/caesar-influence.json';
 import { GameContext } from './GameContext';
 
 const TurnState = createContext();
 
-function TurnStateProvider({ initialState, children }) {
+function TurnStateProvider({ initialState, initialPlayer, children }) {
     const { socket } = useContext(GameContext);
 
     const [establishedState, setEstablishedState] = useState(initialState);
     const [activeState, setActiveState] = useState({});
     const [playersTurn, setPlayersTurn] = useState(true);
-    const [tokensRemaining, setTokensRemaining] = useState(19);
-    const [payerTokens, setPlayerTokens] = useState(
-        [caesarInfluence[0], caesarInfluence[6]].map((token) => ({
-            ...token,
-            inHand: true,
-        })),
+    const [tokensRemaining, setTokensRemaining] = useState(
+        initialPlayer.tokensRemaining,
+    );
+    console.log(initialPlayer.hand);
+    const [playerHand, setPlayerHand] = useState(
+        initialPlayer.hand.map((token) => ({ ...token, inHand: true })),
     );
 
     useEffect(() => {
@@ -24,8 +23,8 @@ function TurnStateProvider({ initialState, children }) {
     }, [socket]);
 
     function updateActiveState(location, token, node) {
-        setPlayerTokens(
-            payerTokens.map((playerToken) => {
+        setPlayerHand(
+            playerHand.map((playerToken) => {
                 if (playerToken.id === token.id) {
                     return { ...playerToken, inHand: false };
                 }
@@ -46,7 +45,7 @@ function TurnStateProvider({ initialState, children }) {
             value={{
                 endTurn,
                 playersTurn,
-                payerTokens,
+                playerHand,
                 tokensRemaining,
                 establishedState,
                 activeState,

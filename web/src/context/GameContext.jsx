@@ -9,6 +9,7 @@ function GameContextProvider({ children }) {
     const [socket, setSocket] = useState();
     const [side, setSide] = useState();
     const [initialState, setInitialState] = useState();
+    const [initialPlayer, setInitialPlayer] = useState();
     const { user } = useContext(User);
     const [gameInProgress, setGameInProgress] = useState(false);
 
@@ -22,8 +23,10 @@ function GameContextProvider({ children }) {
                 setGameInProgress(true);
                 setInitialState(initialState);
             });
-
-            socket.on('side-assigned', (side) => setSide(side));
+            socket.on('init-player', ({ side, hand, tokensRemaining }) => {
+                setSide(side);
+                setInitialPlayer({ hand, tokensRemaining });
+            });
 
             socket.on('game-paused', () => {
                 console.log('Game paused');
@@ -37,7 +40,7 @@ function GameContextProvider({ children }) {
 
     return (
         <GameContext.Provider
-            value={{ side, socket, gameInProgress, initialState }}
+            value={{ side, socket, gameInProgress, initialState, initialPlayer }}
         >
             {children}
         </GameContext.Provider>

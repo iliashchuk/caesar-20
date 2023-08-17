@@ -29,12 +29,10 @@ io.on("connection", async (socket) => {
         game.verifyOrAddPlayer(user);
     }
 
-    console.log("Game", game.players);
-
     if (game.ready) {
         logEmit("game-ready");
         io.emit("game-ready", game.state);
-        socket.emit("side-assigned", game.players[user]);
+        socket.emit("init-player", game.players[user].clientData);
     }
 
     socket.on("disconnect", () => {
