@@ -37,7 +37,6 @@ function GameContextProvider({ children }) {
 
         return () => socket && socket.disconnect();
     }, [user]);
-    console.log('side', side);
 
     return (
         <GameContext.Provider

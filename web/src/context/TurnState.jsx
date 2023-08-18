@@ -11,7 +11,6 @@ function TurnStateProvider({ initialState, initialPlayer, children }) {
     const [playerTokens, setPlayerTokens] = useState(initialPlayer.hand);
     const [establishedState, setEstablishedState] = useState(initialState);
     const [playersTurn, setPlayersTurn] = useState(initialPlayer.playersTurn);
-
     const { socket } = useContext(GameContext);
 
     useEffect(() => {

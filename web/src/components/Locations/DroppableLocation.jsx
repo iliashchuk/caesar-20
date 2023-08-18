@@ -1,16 +1,12 @@
 import { useDroppable } from '@dnd-kit/core';
 import classnames from 'classnames';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 
-import { TurnState } from '../../context';
 import { Location } from './Location';
 import styles from './Location.module.scss';
 
 export function DroppableLocation({ location }) {
-    const { establishedState } = useContext(TurnState);
     const [disabled, setDisabled] = useState(true);
-
-    const establishedLocationToken = establishedState[location.id];
 
     const { setNodeRef, active } = useDroppable({
         id: location.id,
@@ -21,7 +17,7 @@ export function DroppableLocation({ location }) {
     const draggedTokenType = active?.data.current.type;
 
     useEffect(() => {
-        if (establishedLocationToken || !draggedTokenType) {
+        if (!draggedTokenType) {
             setDisabled(true);
             return;
         }
@@ -30,7 +26,7 @@ export function DroppableLocation({ location }) {
             setDisabled(false);
             return;
         }
-    }, [draggedTokenType, establishedLocationToken, location.type]);
+    }, [draggedTokenType, location.type]);
 
     return (
         <Location

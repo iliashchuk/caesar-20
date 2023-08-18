@@ -3,9 +3,8 @@ import { useContext, useMemo } from 'react';
 
 import { ActiveState, SizingContext } from '../../context';
 import { createCircleCollisionDetectionForRadius } from '../../static/circleCollision';
-import locations from '../../static/locations.json';
 import { Hand } from '../Hand';
-import { DroppableLocation } from '../Location';
+import { AvailableLocations, EstablishedLocations } from '../Locations';
 import { TokenCounter } from '../TokenCounter';
 import { TurnButton } from '../TurnButton';
 import styles from './TurnManager.module.scss';
@@ -46,10 +45,12 @@ export function TurnManager() {
                 <Hand />
                 <TurnButton />
             </div>
-            {scale &&
-                locations.map((location) => (
-                    <DroppableLocation key={location.id} location={location} />
-                ))}
+            {scale && (
+                <>
+                    <EstablishedLocations />
+                    <AvailableLocations />
+                </>
+            )}
         </DndContext>
     );
 }
