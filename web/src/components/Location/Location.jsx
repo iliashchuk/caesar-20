@@ -3,21 +3,24 @@ import classnames from 'classnames';
 import { useContext, useEffect, useMemo, useState } from 'react';
 import { OutPortal } from 'react-reverse-portal';
 
-import { SizingContext, TurnState } from '../../context';
+import { ActiveState, SizingContext, TurnState } from '../../context';
 import { Token } from '../Token';
 import styles from './Location.module.scss';
 
 export function Location({ location }) {
     const { locationSize } = useContext(SizingContext);
-    const { activeState, establishedState, flipActiveToken } =
-        useContext(TurnState);
+    const { establishedState } = useContext(TurnState);
+    const { activeLocation, activeToken, flipActiveToken } =
+        useContext(ActiveState);
     const [disabled, setDisabled] = useState(true);
 
-    const establishedLocationToken = establishedState[location.name];
-    const activeLocationToken = activeState[location.name];
+    const establishedLocationToken = establishedState[location.id];
+    const activeLocationToken =
+        activeLocation?.id === location.id && activeToken;
 
     const { setNodeRef, active } = useDroppable({
-        id: location.name,
+        id: location.id,
+        data: location,
         disabled,
     });
 
@@ -81,9 +84,9 @@ export function Location({ location }) {
         <div
             ref={setNodeRef}
             onClick={() => {
-                alert(location.name);
+                alert(location.id);
             }}
-            key={location.name}
+            key={location.id}
             className={classnames(styles.location, {
                 [styles.available]: !disabled,
             })}

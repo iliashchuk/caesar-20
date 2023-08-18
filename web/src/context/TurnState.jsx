@@ -8,19 +8,9 @@ function TurnStateProvider({ initialState, initialPlayer, children }) {
     const [tokensRemaining, setTokensRemaining] = useState(
         initialPlayer.tokensRemaining,
     );
-    const [playerHand, setPlayerHand] = useState(
-        initialPlayer.hand.map((token) => ({ ...token, inHand: true })),
-    );
+    const [playerTokens, setPlayerTokens] = useState(initialPlayer.hand);
     const [establishedState, setEstablishedState] = useState(initialState);
-    const [activeLocation, setActiveLocation] = useState();
-    const [activeToken, setActiveToken] = useState();
     const [playersTurn, setPlayersTurn] = useState(initialPlayer.playersTurn);
-    const canEndTurn = playersTurn && activeToken;
-
-    function resetActiveState() {
-        setActiveLocation();
-        setActiveToken();
-    }
 
     const { socket } = useContext(GameContext);
 
@@ -28,40 +18,17 @@ function TurnStateProvider({ initialState, initialPlayer, children }) {
         socket.on('established', (state) => setEstablishedState(state));
 
         socket.on('player', ({ hand, tokensRemaining, playersTurn }) => {
-            resetActiveState();
-            setPlayerHand(hand.map((token) => ({ ...token, inHand: true })));
+            setPlayerTokens(hand);
             setTokensRemaining(tokensRemaining);
             setPlayersTurn(playersTurn);
         });
     }, [socket]);
 
-    function flipActiveToken() {
-        setActiveToken({
-            ...activeToken,
-            flipped: !activeToken.flipped,
-        });
-    }
-
-    function updateActiveState(location, token) {
-        setPlayerHand(
-            playerHand.map((playerToken) => {
-                if (playerToken.id === token.id) {
-                    return { ...playerToken, inHand: false };
-                }
-
-                return { ...playerToken, inHand: true };
-            }),
-        );
-        setActiveToken(token);
-        setActiveLocation(location);
-    }
-
-    function endTurn() {
+    function endTurn(location, token) {
         socket.emit('end-turn', {
-            location: activeLocation,
-            token: activeToken,
+            location: location.id,
+            token: token,
         });
-        resetActiveState({});
     }
 
     return (
@@ -69,13 +36,9 @@ function TurnStateProvider({ initialState, initialPlayer, children }) {
             value={{
                 endTurn,
                 playersTurn,
-                playerHand,
+                playerTokens,
                 tokensRemaining,
                 establishedState,
-                canEndTurn,
-                activeState: { [activeLocation]: activeToken },
-                updateActiveState,
-                flipActiveToken,
             }}
         >
             {children}

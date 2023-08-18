@@ -1,19 +1,20 @@
 import { useContext } from 'react';
 
-import { TurnState } from '../../context';
+import { ActiveState, TurnState } from '../../context';
 import { PortalReadyPlayerToken } from '../Token';
 import styles from './Hand.module.scss';
 
 export function Hand() {
-    const { playerHand } = useContext(TurnState);
+    const { playerTokens } = useContext(TurnState);
+    const { tokensInHand } = useContext(ActiveState);
 
     return (
         <div className={styles.hand}>
-            {playerHand.map((token) => (
+            {playerTokens.map((token) => (
                 <PortalReadyPlayerToken
                     key={token.id}
                     token={token}
-                    inHand={token.inHand}
+                    inHand={tokensInHand.find(({ id }) => id === token.id)}
                 />
             ))}
         </div>

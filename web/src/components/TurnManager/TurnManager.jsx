@@ -1,18 +1,18 @@
 import { DndContext, pointerWithin } from '@dnd-kit/core';
 import { useContext, useMemo } from 'react';
 
-import { SizingContext, TurnState } from '../../context';
+import { ActiveState, SizingContext } from '../../context';
 import { createCircleCollisionDetectionForRadius } from '../../static/circleCollision';
 import locations from '../../static/locations.json';
 import { Hand } from '../Hand';
 import { Location } from '../Location';
-import { TurnButton } from '../TurnButton';
 import { TokenCounter } from '../TokenCounter';
+import { TurnButton } from '../TurnButton';
 import styles from './TurnManager.module.scss';
 
 export function TurnManager() {
     const { scale, locationRadius, locationSize } = useContext(SizingContext);
-    const { updateActiveState } = useContext(TurnState);
+    const { updateActiveState } = useContext(ActiveState);
 
     const collisionDetection = useMemo(
         () =>
@@ -27,7 +27,7 @@ export function TurnManager() {
             return;
         }
 
-        const location = event.over.id;
+        const location = event.over.data.current;
         const token = event.active.data.current;
 
         updateActiveState(location, token);
@@ -48,7 +48,7 @@ export function TurnManager() {
             </div>
             {scale &&
                 locations.map((location) => (
-                    <Location key={location.name} location={location} />
+                    <Location key={location.id} location={location} />
                 ))}
         </DndContext>
     );

@@ -1,6 +1,11 @@
 import { useContext } from 'react';
 
-import { GameContext, TurnStateProvider } from '../../context';
+import {
+    ActiveStateProvider,
+    GameContext,
+    TurnState,
+    TurnStateProvider,
+} from '../../context';
 import { Map } from '../Map';
 import { TurnManager } from '../TurnManager';
 import styles from './Game.module.scss';
@@ -17,7 +22,9 @@ export function Game() {
                     initialState={initialState}
                     initialPlayer={initialPlayer}
                 >
-                    <TurnManager />
+                    <ActiveStateProvider>
+                        <TurnManager />
+                    </ActiveStateProvider>
                 </TurnStateProvider>
             ) : (
                 <h1 className={styles.waiting}>Waiting for another player</h1>
