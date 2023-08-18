@@ -1,6 +1,6 @@
 import { GameConnectionManager } from "./GameConnectionManager.js";
 import { Player } from "./Player.js";
-import { Side } from "../types.js";
+import { PlayerInfluence, Side } from "../types.js";
 import { getRandomBonusesForProvinces } from "../utils.js";
 
 export class Game {
@@ -43,10 +43,7 @@ export class Game {
         return this.players[this.opponents[user]];
     }
 
-    endUserTurn(user: string, data: Record<string, any>) {
-        console.log(data);
-        const location = Object.keys(data)[0];
-        const token = data[location];
+    endUserTurn(user: string, {token, location}: {token: PlayerInfluence, location: string}) {
         const activePlayer = this.players[user];
 
         activePlayer.playFromHand(token.id);
@@ -56,6 +53,6 @@ export class Game {
         const opponent = this.getOpponentPlayer(user);
         opponent.playersTurn = true;
 
-        this.state = { ...this.state, ...data };
+        this.state = { ...this.state, [location]: token };
     }
 }

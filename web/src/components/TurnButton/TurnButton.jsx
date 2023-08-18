@@ -4,12 +4,12 @@ import { SizingContext, TurnState } from '../../context';
 import styles from './TurnButton.module.scss';
 
 export function TurnButton() {
-    const { playersTurn, endTurn, activeState } = useContext(TurnState);
+    const { playersTurn, endTurn, canEndTurn } = useContext(TurnState);
     const { locationSize } = useContext(SizingContext);
 
     return (
         <button
-            disabled={!activeState || !playersTurn}
+            disabled={!canEndTurn}
             className={styles.turnButton}
             onClick={endTurn}
             style={{ height: locationSize + 12 }}

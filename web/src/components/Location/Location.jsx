@@ -9,8 +9,8 @@ import styles from './Location.module.scss';
 
 export function Location({ location }) {
     const { locationSize } = useContext(SizingContext);
-    const { activeState, establishedState } = useContext(TurnState);
-    const [flipped, setFlipped] = useState(false);
+    const { activeState, establishedState, flipActiveToken } =
+        useContext(TurnState);
     const [disabled, setDisabled] = useState(true);
 
     const establishedLocationToken = establishedState[location.name];
@@ -32,12 +32,6 @@ export function Location({ location }) {
         top: location.y * 100 + '%',
     };
 
-    useEffect(() => {
-        if (!establishedLocationToken || activeLocationToken) {
-            setFlipped(false);
-        }
-    }, [establishedLocationToken, activeLocationToken, setFlipped]);
-
     const draggedTokenType = active?.data.current.type;
 
     useEffect(() => {
@@ -46,7 +40,7 @@ export function Location({ location }) {
             return;
         }
 
-        if (draggedTokenType === location.type) {
+        if (draggedTokenType === location.type || draggedTokenType === 'wild') {
             setDisabled(false);
             return;
         }
@@ -55,7 +49,9 @@ export function Location({ location }) {
     const childToken = useMemo(() => {
         if (establishedLocationToken) {
             const rotate =
-                (flipped ? location.angle + 180 : location.angle) + 'deg';
+                (establishedLocationToken.flipped
+                    ? location.angle + 180
+                    : location.angle) + 'deg';
 
             return <Token style={{ rotate }} {...establishedLocationToken} />;
         }
@@ -63,9 +59,13 @@ export function Location({ location }) {
             return (
                 <OutPortal
                     node={activeLocationToken.portalNode}
-                    rotation={flipped ? location.angle + 180 : location.angle}
+                    rotation={
+                        activeLocationToken.flipped
+                            ? location.angle + 180
+                            : location.angle
+                    }
                     toggleFlipped={() => {
-                        setFlipped(!flipped);
+                        flipActiveToken();
                     }}
                 />
             );
@@ -73,8 +73,8 @@ export function Location({ location }) {
     }, [
         establishedLocationToken,
         activeLocationToken,
-        flipped,
-        location.angle,
+        location,
+        flipActiveToken,
     ]);
 
     return (

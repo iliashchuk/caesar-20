@@ -26,4 +26,4 @@ export type PlayerClientData = {
     playersTurn: boolean;
 };
 
-export type PlayerInfluence = Influence & { side: Side };
+export type PlayerInfluence = Influence & { side: Side; flipped?: boolean };
