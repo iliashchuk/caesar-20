@@ -1,15 +1,11 @@
 import classnames from 'classnames';
 import { forwardRef, useContext } from 'react';
 
-import { SizingContext, TurnState } from '../../context';
-import { Token } from '../Token';
+import { SizingContext } from '../../context';
 import styles from './Location.module.scss';
 
-function LocationWithoutRef({ location, classes }, ref) {
+function LocationWithoutRef({ location, classes, children }, ref) {
     const { locationSize } = useContext(SizingContext);
-    const { establishedState } = useContext(TurnState);
-
-    const establishedLocationToken = establishedState[location.id];
 
     const style = {
         width: locationSize,
@@ -19,11 +15,6 @@ function LocationWithoutRef({ location, classes }, ref) {
         top: location.y * 100 + '%',
     };
 
-    const tokenRotation =
-        (establishedLocationToken?.turned
-            ? location.angle + 180
-            : location.angle) + 'deg';
-
     return (
         <div
             ref={ref}
@@ -31,12 +22,7 @@ function LocationWithoutRef({ location, classes }, ref) {
             className={classnames(styles.location, classes)}
             style={style}
         >
-            {establishedLocationToken && (
-                <Token
-                    style={{ rotate: tokenRotation }}
-                    {...establishedLocationToken}
-                />
-            )}
+            {children}
         </div>
     );
 }

@@ -35,8 +35,8 @@ export function MovableToken({ isMoving, rotation, token }) {
             }}
         >
             <Token
+                rotation={angle}
                 style={{
-                    rotate: `${angle}deg`,
                     transition: 'rotate 0.4s',
                 }}
                 {...token}

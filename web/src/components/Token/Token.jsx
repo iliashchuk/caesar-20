@@ -27,7 +27,7 @@ function getImagePath(side, id) {
     return `${directory}/${file}.png`;
 }
 
-export function Token({ side, id, style, make3d = true }) {
+export function Token({ side, id, style, rotation, make3d = true }) {
     const { locationSize } = useContext(SizingContext);
 
     const imagePath = useMemo(() => getImagePath(side, id), [side, id]);
@@ -43,7 +43,7 @@ export function Token({ side, id, style, make3d = true }) {
 
     const imageElement = (
         <img
-            style={{ filter, ...style }}
+            style={{ filter, rotate: rotation, ...style }}
             alt={`${side}-${id}`}
             className={styles.token}
             width={locationSize}
