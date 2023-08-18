@@ -23,9 +23,10 @@ function GameContextProvider({ children }) {
                 setGameInProgress(true);
                 setInitialState(initialState);
             });
-            socket.on('init-player', ({ side, hand, tokensRemaining }) => {
+
+            socket.on('init-player', ({ side, ...playerState }) => {
                 setSide(side);
-                setInitialPlayer({ hand, tokensRemaining });
+                setInitialPlayer(playerState);
             });
 
             socket.on('game-paused', () => {
@@ -40,7 +41,13 @@ function GameContextProvider({ children }) {
 
     return (
         <GameContext.Provider
-            value={{ side, socket, gameInProgress, initialState, initialPlayer }}
+            value={{
+                side,
+                socket,
+                gameInProgress,
+                initialState,
+                initialPlayer,
+            }}
         >
             {children}
         </GameContext.Provider>

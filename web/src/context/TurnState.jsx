@@ -5,21 +5,26 @@ import { GameContext } from './GameContext';
 const TurnState = createContext();
 
 function TurnStateProvider({ initialState, initialPlayer, children }) {
-    const { socket } = useContext(GameContext);
-
-    const [establishedState, setEstablishedState] = useState(initialState);
-    const [activeState, setActiveState] = useState({});
-    const [playersTurn, setPlayersTurn] = useState(true);
     const [tokensRemaining, setTokensRemaining] = useState(
         initialPlayer.tokensRemaining,
     );
-    console.log(initialPlayer.hand);
     const [playerHand, setPlayerHand] = useState(
         initialPlayer.hand.map((token) => ({ ...token, inHand: true })),
     );
+    const [establishedState, setEstablishedState] = useState(initialState);
+    const [activeState, setActiveState] = useState({});
+    const [playersTurn, setPlayersTurn] = useState(initialPlayer.playersTurn);
+
+    const { socket } = useContext(GameContext);
 
     useEffect(() => {
         socket.on('established', (state) => setEstablishedState(state));
+
+        socket.on('player', ({ hand, tokensRemaining, playersTurn }) => {
+            setPlayerHand(hand.map((token) => ({ ...token, inHand: true })));
+            setTokensRemaining(tokensRemaining);
+            setPlayersTurn(playersTurn);
+        });
     }, [socket]);
 
     function updateActiveState(location, token, node) {
@@ -36,8 +41,8 @@ function TurnStateProvider({ initialState, initialPlayer, children }) {
     }
 
     function endTurn() {
-        setPlayersTurn(false);
         socket.emit('end-turn', activeState);
+        setActiveState({});
     }
 
     return (

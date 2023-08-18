@@ -1,5 +1,13 @@
 import { provincesBarringItalia } from "./static/provinces.js";
 
+export function shortenId(id: string) {
+    return id.slice(0, 8);
+}
+
+export function logEmit(msg) {
+    console.info("EMITTING: ", msg);
+}
+
 export function shuffle<T>(array: T[]): T[] {
     let m = array.length,
         t: T,
