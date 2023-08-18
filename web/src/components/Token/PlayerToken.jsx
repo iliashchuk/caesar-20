@@ -1,10 +1,13 @@
 import { useDraggable } from '@dnd-kit/core';
 import { CSS } from '@dnd-kit/utilities';
+import { useContext } from 'react';
 
+import { ActiveState } from '../../context';
 import { MovableToken } from './MovableToken';
 import styles from './Token.module.scss';
 
-export function PlayerToken({ token, rotation, portalNode, toggleFlipped }) {
+export function PlayerToken({ token, rotation, portalNode }) {
+    const { turnActiveToken } = useContext(ActiveState);
     const { attributes, listeners, setNodeRef, isDragging, transform } =
         useDraggable({
             id: token.id,
@@ -14,9 +17,7 @@ export function PlayerToken({ token, rotation, portalNode, toggleFlipped }) {
     const handleTokenRightClick = (e) => {
         e.preventDefault();
 
-        if (toggleFlipped) {
-            toggleFlipped();
-        }
+        turnActiveToken();
     };
 
     const transformStyle = transform ? CSS.Translate.toString(transform) : '';

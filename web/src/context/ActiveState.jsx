@@ -10,10 +10,10 @@ export function ActiveStateProvider({ children }) {
     const [activeToken, setActiveToken] = useState();
     const [tokensInHand, setTokensInHand] = useState(playerTokens);
 
-    function flipActiveToken() {
+    function turnActiveToken() {
         setActiveToken({
             ...activeToken,
-            flipped: !activeToken.flipped,
+            turned: !activeToken.turned,
         });
     }
 
@@ -47,7 +47,7 @@ export function ActiveStateProvider({ children }) {
                 activeLocation,
                 activeToken,
                 endTurnActivity,
-                flipActiveToken,
+                turnActiveToken,
                 updateActiveState,
             }}
         >

@@ -7,11 +7,10 @@ import { ActiveState, SizingContext, TurnState } from '../../context';
 import { Token } from '../Token';
 import styles from './Location.module.scss';
 
-export function Location({ location }) {
+export function DroppableLocation({ location }) {
     const { locationSize } = useContext(SizingContext);
     const { establishedState } = useContext(TurnState);
-    const { activeLocation, activeToken, flipActiveToken } =
-        useContext(ActiveState);
+    const { activeLocation, activeToken } = useContext(ActiveState);
     const [disabled, setDisabled] = useState(true);
 
     const establishedLocationToken = establishedState[location.id];
@@ -52,7 +51,7 @@ export function Location({ location }) {
     const childToken = useMemo(() => {
         if (establishedLocationToken) {
             const rotate =
-                (establishedLocationToken.flipped
+                (establishedLocationToken.turned
                     ? location.angle + 180
                     : location.angle) + 'deg';
 
@@ -63,29 +62,18 @@ export function Location({ location }) {
                 <OutPortal
                     node={activeLocationToken.portalNode}
                     rotation={
-                        activeLocationToken.flipped
+                        activeLocationToken.turned
                             ? location.angle + 180
                             : location.angle
                     }
-                    toggleFlipped={() => {
-                        flipActiveToken();
-                    }}
                 />
             );
         }
-    }, [
-        establishedLocationToken,
-        activeLocationToken,
-        location,
-        flipActiveToken,
-    ]);
+    }, [establishedLocationToken, activeLocationToken, location]);
 
     return (
         <div
             ref={setNodeRef}
-            onClick={() => {
-                alert(location.id);
-            }}
             key={location.id}
             className={classnames(styles.location, {
                 [styles.available]: !disabled,

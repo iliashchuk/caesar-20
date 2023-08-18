@@ -5,7 +5,7 @@ import { ActiveState, SizingContext } from '../../context';
 import { createCircleCollisionDetectionForRadius } from '../../static/circleCollision';
 import locations from '../../static/locations.json';
 import { Hand } from '../Hand';
-import { Location } from '../Location';
+import { DroppableLocation } from '../Location';
 import { TokenCounter } from '../TokenCounter';
 import { TurnButton } from '../TurnButton';
 import styles from './TurnManager.module.scss';
@@ -48,7 +48,7 @@ export function TurnManager() {
             </div>
             {scale &&
                 locations.map((location) => (
-                    <Location key={location.id} location={location} />
+                    <DroppableLocation key={location.id} location={location} />
                 ))}
         </DndContext>
     );
