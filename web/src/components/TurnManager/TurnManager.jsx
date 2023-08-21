@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 
 import { SizingContext } from '../../context';
+import { OpponentControlSlots, PlayerControlSlots } from '../ControlSlots';
 import { Hand } from '../Hand';
 import { AvailableLocations, EstablishedLocations } from '../Locations';
 import { TokenCounter } from '../TokenCounter';
@@ -23,6 +24,8 @@ export function TurnManager() {
             </div>
             {scale && (
                 <>
+                    <PlayerControlSlots />
+                    <OpponentControlSlots />
                     <EstablishedLocations />
                     <AvailableLocations />
                 </>
