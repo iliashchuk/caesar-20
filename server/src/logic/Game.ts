@@ -1,14 +1,21 @@
 import { GameConnectionManager } from "./GameConnectionManager.js";
 import { Player } from "./Player.js";
-import { LocationName, PlayerInfluence, Side } from "../types.js";
+import { LocationId, PlayerInfluence, Side, User, Token } from "../types.js";
 import { getRandomBonusesForProvinces } from "../utils.js";
+import {
+    borderProvinceDictionary,
+    provinceBordersDictionary,
+    provinces,
+} from "../static/provinces.js";
+import { Province } from "./Province.js";
 
 export class Game {
     inProgress: boolean = false;
-    state: Record<string, any>;
-    players: Record<string, Player> = {};
-    opponents: Record<string, string> = {};
+    players: Record<User, Player> = {};
+    opponents: Record<User, User> = {};
     connectionManager: GameConnectionManager = new GameConnectionManager();
+    provinces: Record<LocationId, Province> = {};
+    borders: Record<LocationId, PlayerInfluence> = {};
 
     get ready() {
         const enoughPlayers =
@@ -17,7 +24,27 @@ export class Game {
         return enoughPlayers && this.connectionManager.allConnectionsOnline;
     }
 
-    addOrReconnectPlayer = (user: string, socket) => {
+    get state(): Record<LocationId, Token> {
+        const provinceState = Object.entries(this.provinces).reduce(
+            (acc, [provinceId, province]) => {
+                if (province.closed) {
+                    acc[provinceId] = {
+                        side: province.closedBy,
+                        id: "control",
+                    };
+                } else {
+                    acc[provinceId] = province.bonus;
+                }
+
+                return acc;
+            },
+            {}
+        );
+
+        return { ...this.borders, ...provinceState };
+    }
+
+    addOrReconnectPlayer = (user: User, socket) => {
         if (this.connectionManager.connections[user]) {
             this.connectionManager.reconnect(user, socket);
         } else {
@@ -25,9 +52,20 @@ export class Game {
         }
     };
 
+    private initProvinces() {
+        const bonusByProvince = getRandomBonusesForProvinces();
+
+        for (let province of provinces) {
+            this.provinces[province] = new Province(
+                province,
+                bonusByProvince[province]
+            );
+        }
+    }
+
     start() {
         this.inProgress = true;
-        this.state = getRandomBonusesForProvinces();
+        this.initProvinces();
 
         const users = this.connectionManager.users;
         this.opponents[users[0]] = users[1];
@@ -44,18 +82,17 @@ export class Game {
     }
 
     endUserTurn(
-        user: string,
-        { token, location }: { token: PlayerInfluence; location: string }
+        user: User,
+        { token, location }: { token: PlayerInfluence; location: LocationId }
     ) {
         const activePlayer = this.players[user];
+        activePlayer.endTurn(token.id);
+        this.getOpponentPlayer(user).playersTurn = true;
 
-        activePlayer.playFromHand(token.id);
-        activePlayer.drawToHand();
-        activePlayer.playersTurn = false;
+        const province = borderProvinceDictionary[location];
 
-        const opponent = this.getOpponentPlayer(user);
-        opponent.playersTurn = true;
+        this.provinces[province].tryCloseBorder(location, activePlayer.side);
 
-        this.state = { ...this.state, [location]: token };
+        this.borders = { ...this.borders, [location]: token };
     }
 }

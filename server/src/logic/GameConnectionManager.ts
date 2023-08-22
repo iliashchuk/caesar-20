@@ -1,4 +1,5 @@
 import { Socket } from "socket.io";
+import { User } from "../types.js";
 
 type Connection = {
     socket: Socket;
@@ -6,7 +7,7 @@ type Connection = {
 };
 
 export class GameConnectionManager {
-    connections: Record<string, Connection> = {};
+    connections: Record<User, Connection> = {};
 
     get allConnectionsOnline() {
         return Object.values(this.connections).every(
@@ -18,7 +19,7 @@ export class GameConnectionManager {
         return Object.keys(this.connections);
     }
 
-    addConnection(user: string, socket: Socket) {
+    addConnection(user: User, socket: Socket) {
         this.connections[user] = { socket, online: true };
     }
 

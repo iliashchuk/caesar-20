@@ -1,6 +1,6 @@
-import { LocationName } from "../types.js";
+import { LocationId } from "../types.js";
 
-export const locations = Object.freeze([
+export const locations: readonly LocationId[] = Object.freeze([
     "gallia_cisalpina",
     "gallia-gallia_cisalpina",
     "gallia",
@@ -52,7 +52,7 @@ export const locations = Object.freeze([
     "cyrene-aegyptus",
 ]);
 
-export const provincesBarringItalia = Object.freeze([
+export const provincesBarringItalia: readonly LocationId[] = Object.freeze([
     "gallia_cisalpina",
     "gallia",
     "dalmatia",
@@ -72,7 +72,7 @@ export const provincesBarringItalia = Object.freeze([
     "cyrene",
 ]);
 
-export const provinces = Object.freeze([
+export const provinces: readonly LocationId[] = Object.freeze([
     "gallia_cisalpina",
     "gallia",
     "dalmatia",
@@ -93,7 +93,7 @@ export const provinces = Object.freeze([
     "italia",
 ]);
 
-export const provinceBordersDictionary: Record<LocationName, LocationName[]> =
+export const provinceBordersDictionary: Record<LocationId, LocationId[]> =
     Object.freeze({
         gallia_cisalpina: [
             "dalmatia-gallia_cisalpina",
@@ -172,7 +172,8 @@ export const provinceBordersDictionary: Record<LocationName, LocationName[]> =
             "sardinia-italia",
         ],
     });
-export const borderProvinceDictionary: Record<LocationName, LocationName> =
+
+export const borderProvinceDictionary: Record<LocationId, LocationId> =
     Object.freeze({
         "dalmatia-gallia_cisalpina": "dalmatia",
         "gallia_cisalpina-italia": "italia",

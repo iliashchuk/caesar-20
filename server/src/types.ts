@@ -1,3 +1,9 @@
+export type LocationId = string;
+
+export type User = string;
+
+export type TokenId = string;
+
 export enum Side {
     POMPEY = "pompey",
     CAESAR = "caesar",
@@ -10,8 +16,15 @@ export enum InfluenceType {
     WILD = "wild",
 }
 
+export enum Bonus {
+    WEALTH = "wealth",
+    STRENGTH = "strength",
+    TACTICS = "tactics",
+    SENATE = "senate",
+}
+
 export type Influence = {
-    id: string;
+    id: TokenId;
     type: InfluenceType;
     power: {
         top: number;
@@ -26,6 +39,11 @@ export type PlayerClientData = {
     playersTurn: boolean;
 };
 
-export type LocationName = string;
-
 export type PlayerInfluence = Influence & { side: Side; turned?: boolean };
+
+export type BonusToken = {
+    id: Bonus;
+    side: "bonus";
+};
+
+export type Token = PlayerInfluence | BonusToken;
