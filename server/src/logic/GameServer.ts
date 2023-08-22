@@ -7,6 +7,7 @@ export function createGameServer(io: Server) {
 
     io.on("connection", async (socket) => {
         const user = shortenId(socket.handshake.auth.user);
+        let waitingForAnimation = false;
 
         console.warn(`User ${user} connected by socket ${socket.id} `);
 
@@ -27,13 +28,21 @@ export function createGameServer(io: Server) {
         socket.on("end-turn", (data) => {
             game.endUserTurn(user, data);
 
+            io.emit("state-changes", game.stateChanges);
             socket.emit("player", game.players[user].clientData);
-            socket.broadcast.emit(
-                "player",
-                game.getOpponentPlayer(user).clientData
-            );
+            waitingForAnimation = true;
+        });
 
-            io.emit("established", game.state);
+        socket.on("state-change-animated", () => {
+            if (waitingForAnimation) {
+                waitingForAnimation = false;
+                socket.broadcast.emit(
+                    "player",
+                    game.getOpponentPlayer(user).clientData
+                );
+
+                io.emit("established", game.state);
+            }
         });
 
         socket.on("disconnect", () => {

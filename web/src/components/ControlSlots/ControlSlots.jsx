@@ -4,13 +4,19 @@ import { TokenMovement } from '../../context';
 import { Location } from '../Locations';
 import { MovingToken, Token } from '../Token';
 
-export function ControlSlots({ side, slots, opponent }) {
+export function ControlSlots({ side, slots }) {
     const { movingToken, finishMovingToken } = useContext(TokenMovement);
     const [actualSlots, setActualSlots] = useState(slots);
     const [movingTokenIndex, setMovingTokenIndex] = useState();
 
     useEffect(() => {
-        if ((opponent ? 'opponent-control' : 'control') === movingToken) {
+        console.log(movingToken);
+        if (
+            movingToken &&
+            movingToken.id === 'control' &&
+            movingToken.side === side
+        ) {
+            console.log('set animation');
             setMovingTokenIndex(actualSlots.length - 1);
         }
     }, [movingToken]);

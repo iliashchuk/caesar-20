@@ -46,7 +46,7 @@ export const locations: readonly LocationId[] = Object.freeze([
     "asia-aegyptus",
     "creta-aegyptus",
     "creta-cyrene",
-    "cyrene-africa",
+    "africa-cyrene",
     "africa",
     "cyrene",
     "cyrene-aegyptus",
@@ -157,12 +157,12 @@ export const provinceBordersDictionary: Record<LocationId, LocationId[]> =
             "gallia-sardinia",
         ],
         africa: [
-            "cyrene-africa",
+            "africa-cyrene",
             "numidia-africa",
             "sicilia-africa",
             "achaia-africa",
         ],
-        cyrene: ["cyrene-africa", "creta-cyrene", "cyrene-aegyptus"],
+        cyrene: ["africa-cyrene", "creta-cyrene", "cyrene-aegyptus"],
         italia: [
             "gallia_cisalpina-italia",
             "dalmatia-italia",
@@ -207,5 +207,5 @@ export const borderProvincesDictionary: Record<LocationId, LocationId[]> =
         "italia-sicilia": ["sicilia", "italia"],
         "sardinia-sicilia": ["sicilia", "sardinia"],
         "italia-sardinia": ["sardinia", "italia"],
-        "cyrene-africa": ["africa", "cyrene"],
+        "africa-cyrene": ["africa", "cyrene"],
     });

@@ -298,12 +298,12 @@
         "type": "shield",
         "id": "creta-cyrene"
     },
-    "cyrene-africa": {
+    "africa-cyrene": {
         "x": 0.5630208333333333,
         "y": 0.8156381331563813,
         "angle": -86.7,
         "type": "shield",
-        "id": "cyrene-africa"
+        "id": "africa-cyrene"
     },
     "africa": {
         "x": 0.49635416666666665,

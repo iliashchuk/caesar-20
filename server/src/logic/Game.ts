@@ -1,9 +1,28 @@
 import { GameConnectionManager } from "./GameConnectionManager.js";
 import { Player } from "./Player.js";
-import { LocationId, PlayerInfluence, Side, User, Token } from "../types.js";
+import {
+    LocationId,
+    PlayerInfluence,
+    Side,
+    User,
+    Token,
+    TokenId,
+    Bonus,
+} from "../types.js";
 import { getRandomBonusesForProvinces } from "../utils.js";
 import { borderProvincesDictionary, provinces } from "../static/provinces.js";
 import { Province } from "./Province.js";
+
+enum StateChangeType {
+    BONUS = "bonus",
+    CONTROL = "control",
+}
+type StateChange = {
+    location: LocationId;
+    type: StateChangeType;
+    side?: Side;
+    id: TokenId | Bonus;
+};
 
 export class Game {
     inProgress: boolean = false;
@@ -12,6 +31,7 @@ export class Game {
     connectionManager: GameConnectionManager = new GameConnectionManager();
     provinces: Record<LocationId, Province> = {};
     borders: Record<LocationId, PlayerInfluence> = {};
+    private unsortedStateChanges: StateChange[] = [];
 
     get ready() {
         const enoughPlayers =
@@ -25,7 +45,7 @@ export class Game {
             (acc, [provinceId, province]) => {
                 if (province.closed) {
                     acc[provinceId] = {
-                        side: province.closedBy,
+                        side: province.controlledBy,
                         id: "control",
                     };
                 } else {
@@ -38,6 +58,21 @@ export class Game {
         );
 
         return { ...this.borders, ...provinceState };
+    }
+
+    get stateChanges(): StateChange[] {
+        const changesWithBonusesFirst = this.unsortedStateChanges.sort(
+            (changeA, changeB) => {
+                if (
+                    (changeA.type === StateChangeType.BONUS,
+                    changeB.type === StateChangeType.CONTROL)
+                ) {
+                    return -1;
+                }
+            }
+        );
+
+        return changesWithBonusesFirst;
     }
 
     addOrReconnectPlayer = (user: User, socket) => {
@@ -81,6 +116,7 @@ export class Game {
         user: User,
         { token, location }: { token: PlayerInfluence; location: LocationId }
     ): Province | void {
+        this.unsortedStateChanges = [];
         const activePlayer = this.players[user];
         activePlayer.endTurn(token.id);
         this.getOpponentPlayer(user).playersTurn = true;
@@ -89,9 +125,23 @@ export class Game {
             (borderProvince) => this.provinces[borderProvince]
         );
 
-        provinces.forEach((province) =>
-            province.tryCloseBorder(location, token)
-        );
+        provinces.forEach((province) => {
+            province.tryCloseBorder(location, token);
+
+            if (province.closed) {
+                this.unsortedStateChanges.push({
+                    type: StateChangeType.BONUS,
+                    id: province.bonus.id,
+                    location: province.id,
+                });
+                this.unsortedStateChanges.push({
+                    type: StateChangeType.CONTROL,
+                    id: "control",
+                    location: province.id,
+                    side: province.controlledBy,
+                });
+            }
+        });
 
         this.borders = { ...this.borders, [location]: token };
     }
