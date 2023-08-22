@@ -1,4 +1,6 @@
-export const locations = [
+import { LocationName } from "../types.js";
+
+export const locations = Object.freeze([
     "gallia_cisalpina",
     "gallia-gallia_cisalpina",
     "gallia",
@@ -48,9 +50,9 @@ export const locations = [
     "africa",
     "cyrene",
     "cyrene-aegyptus",
-];
+]);
 
-export const provincesBarringItalia = [
+export const provincesBarringItalia = Object.freeze([
     "gallia_cisalpina",
     "gallia",
     "dalmatia",
@@ -68,4 +70,138 @@ export const provincesBarringItalia = [
     "sardinia",
     "africa",
     "cyrene",
-];
+]);
+
+export const provinces = Object.freeze([
+    "gallia_cisalpina",
+    "gallia",
+    "dalmatia",
+    "macedonia",
+    "achaia",
+    "creta",
+    "asia",
+    "syria",
+    "aegyptus",
+    "hispania_citerior",
+    "hispania_ulterior",
+    "mauritania",
+    "numidia",
+    "sicilia",
+    "sardinia",
+    "africa",
+    "cyrene",
+    "italia",
+]);
+
+export const provinceBordersDictionary: Record<LocationName, LocationName[]> =
+    Object.freeze({
+        gallia_cisalpina: [
+            "dalmatia-gallia_cisalpina",
+            "gallia_cisalpina-italia",
+            "gallia-gallia_cisalpina",
+        ],
+        dalmatia: [
+            "dalmatia-gallia_cisalpina",
+            "italia-dalmatia",
+            "dalmatia-macedonia",
+        ],
+        gallia: [
+            "gallia-gallia_cisalpina",
+            "gallia-sardinia",
+            "gallia-hispania_citerior",
+        ],
+        macedonia: [
+            "dalmatia-macedonia",
+            "italia-macedonia",
+            "macedonia-achaia",
+        ],
+        achaia: [
+            "macedonia-achaia",
+            "achaia-creta",
+            "achaia-africa",
+            "italia-achaia",
+        ],
+        creta: ["creta-asia", "creta-aegyptus", "creta-cyrene", "achaia-creta"],
+        asia: ["creta-asia", "aegyptus-asia", "asia-syria"],
+        syria: ["aegyptus-syria", "asia-syria"],
+        aegyptus: [
+            "aegyptus-syria",
+            "aegyptus-asia",
+            "creta-aegyptus",
+            "cyrene-aegyptus",
+        ],
+        hispania_citerior: [
+            "gallia-hispania_citerior",
+            "hispania_citerior-hispania_ulterior",
+        ],
+        hispania_ulterior: [
+            "hispania_ulterior-mauritania",
+            "hispania_citerior-hispania_ulterior",
+        ],
+        mauritania: [
+            "hispania_ulterior-mauritania",
+            "mauritania-sardinia",
+            "mauritania-numidia",
+        ],
+        numidia: ["numidia-africa", "sicilia-numidia", "mauritania-numidia"],
+        sicilia: [
+            "sicilia-africa",
+            "sicilia-italia",
+            "sicilia-sardinia",
+            "sicilia-numidia",
+        ],
+        sardinia: [
+            "mauritania-sardinia",
+            "sicilia-sardinia",
+            "sardinia-italia",
+            "gallia-sardinia",
+        ],
+        africa: [
+            "africa-cyrene",
+            "numidia-africa",
+            "sicilia-africa",
+            "achaia-africa",
+        ],
+        cyrene: ["africa-cyrene", "creta-cyrene", "cyrene-aegyptus"],
+        italia: [
+            "gallia_cisalpina-italia",
+            "italia-dalmatia",
+            "italia-macedonia",
+            "italia-achaia",
+            "sicilia-italia",
+            "sardinia-italia",
+        ],
+    });
+export const borderProvinceDictionary: Record<LocationName, LocationName> =
+    Object.freeze({
+        "dalmatia-gallia_cisalpina": "dalmatia",
+        "gallia_cisalpina-italia": "italia",
+        "gallia-gallia_cisalpina": "gallia",
+        "italia-dalmatia": "italia",
+        "dalmatia-macedonia": "macedonia",
+        "gallia-sardinia": "sardinia",
+        "gallia-hispania_citerior": "hispania_citerior",
+        "italia-macedonia": "italia",
+        "macedonia-achaia": "achaia",
+        "achaia-creta": "creta",
+        "achaia-africa": "africa",
+        "italia-achaia": "italia",
+        "creta-asia": "asia",
+        "creta-aegyptus": "aegyptus",
+        "creta-cyrene": "cyrene",
+        "aegyptus-asia": "aegyptus",
+        "asia-syria": "syria",
+        "aegyptus-syria": "aegyptus",
+        "cyrene-aegyptus": "cyrene",
+        "hispania_citerior-hispania_ulterior": "hispania_ulterior",
+        "hispania_ulterior-mauritania": "mauritania",
+        "mauritania-sardinia": "sardinia",
+        "mauritania-numidia": "numidia",
+        "numidia-africa": "africa",
+        "sicilia-numidia": "sicilia",
+        "sicilia-africa": "africa",
+        "sicilia-italia": "italia",
+        "sicilia-sardinia": "sardinia",
+        "sardinia-italia": "italia",
+        "africa-cyrene": "cyrene",
+    });

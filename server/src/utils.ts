@@ -25,7 +25,7 @@ export function shuffle<T>(array: T[]): T[] {
 }
 
 export function getRandomBonusesForProvinces() {
-    const shuffledProvinces = shuffle(provincesBarringItalia);
+    const shuffledProvinces = shuffle([...provincesBarringItalia]);
     const bonusesForProvincesBarringItalia = shuffledProvinces.reduce(
         (acc, province, index) => {
             let bonus;

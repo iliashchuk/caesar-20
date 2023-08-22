@@ -1,6 +1,6 @@
 import { GameConnectionManager } from "./GameConnectionManager.js";
 import { Player } from "./Player.js";
-import { PlayerInfluence, Side } from "../types.js";
+import { LocationName, PlayerInfluence, Side } from "../types.js";
 import { getRandomBonusesForProvinces } from "../utils.js";
 
 export class Game {
@@ -43,7 +43,10 @@ export class Game {
         return this.players[this.opponents[user]];
     }
 
-    endUserTurn(user: string, {token, location}: {token: PlayerInfluence, location: string}) {
+    endUserTurn(
+        user: string,
+        { token, location }: { token: PlayerInfluence; location: string }
+    ) {
         const activePlayer = this.players[user];
 
         activePlayer.playFromHand(token.id);

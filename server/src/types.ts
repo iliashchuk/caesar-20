@@ -26,4 +26,6 @@ export type PlayerClientData = {
     playersTurn: boolean;
 };
 
+export type LocationName = string;
+
 export type PlayerInfluence = Influence & { side: Side; turned?: boolean };
