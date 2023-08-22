@@ -6,12 +6,12 @@
         "type": "bonus",
         "id": "gallia_cisalpina"
     },
-    "gallia-gallia_cisalpina": {
+    "gallia_cisalpina-gallia": {
         "x": 0.2546875,
         "y": 0.12787547002875468,
         "angle": 63.2,
         "type": "sword",
-        "id": "gallia-gallia_cisalpina"
+        "id": "gallia_cisalpina-gallia"
     },
     "gallia": {
         "x": 0.20335110434120335,
@@ -78,12 +78,12 @@
         "type": "bonus",
         "id": "creta"
     },
-    "creta-asia": {
+    "asia-creta": {
         "x": 0.7113480578827114,
         "y": 0.5286323129786309,
         "angle": 73.5,
         "type": "shield",
-        "id": "creta-asia"
+        "id": "asia-creta"
     },
     "asia": {
         "x": 0.8255902513328256,
@@ -104,12 +104,12 @@
         "type": "bonus",
         "id": "syria"
     },
-    "aegyptus-syria": {
+    "syria-aegyptus": {
         "x": 0.8667174409748667,
         "y": 0.8237769313146924,
         "angle": 85.7,
         "type": "sword",
-        "id": "aegyptus-syria"
+        "id": "syria-aegyptus"
     },
     "aegyptus": {
         "x": 0.8073115003808073,
@@ -196,12 +196,12 @@
         "type": "bonus",
         "id": "sicilia"
     },
-    "sicilia-sardinia": {
+    "sardinia-sicilia": {
         "x": 0.3572916666666667,
         "y": 0.4721024109710241,
         "angle": -45.7,
         "type": "ship",
-        "id": "sicilia-sardinia"
+        "id": "sardinia-sicilia"
     },
     "sardinia": {
         "x": 0.2953125,
@@ -216,19 +216,19 @@
         "type": "shield",
         "id": "gallia-sardinia"
     },
-    "sardinia-italia": {
+    "italia-sardinia": {
         "x": 0.35833333333333334,
         "y": 0.35390400353904,
         "angle": 45,
         "type": "shield",
-        "id": "sardinia-italia"
+        "id": "italia-sardinia"
     },
-    "sicilia-italia": {
+    "italia-sicilia": {
         "x": 0.42864583333333334,
         "y": 0.4506746295067463,
         "angle": 45,
         "type": "sword",
-        "id": "sicilia-italia"
+        "id": "italia-sicilia"
     },
     "sicilia-africa": {
         "x": 0.4708333333333333,
@@ -256,19 +256,19 @@
         "type": "bonus",
         "id": "italia_bonus"
     },
-    "italia-dalmatia": {
+    "dalmatia-italia": {
         "x": 0.4708333333333333,
         "y": 0.2930767529307675,
         "angle": 35.6,
         "type": "ship",
-        "id": "italia-dalmatia"
+        "id": "dalmatia-italia"
     },
-    "italia-macedonia": {
+    "macedonia-italia": {
         "x": 0.5421875,
         "y": 0.4112751603627516,
         "angle": 63.5,
         "type": "shield",
-        "id": "italia-macedonia"
+        "id": "macedonia-italia"
     },
     "italia-achaia": {
         "x": 0.5276041666666667,
@@ -277,12 +277,12 @@
         "type": "ship",
         "id": "italia-achaia"
     },
-    "aegyptus-asia": {
+    "asia-aegyptus": {
         "x": 0.7890625,
         "y": 0.6283178500331785,
         "angle": 9.3,
         "type": "ship",
-        "id": "aegyptus-asia"
+        "id": "asia-aegyptus"
     },
     "creta-aegyptus": {
         "x": 0.7270833333333333,
@@ -298,12 +298,12 @@
         "type": "shield",
         "id": "creta-cyrene"
     },
-    "africa-cyrene": {
+    "cyrene-africa": {
         "x": 0.5630208333333333,
         "y": 0.8156381331563813,
         "angle": -86.7,
         "type": "shield",
-        "id": "africa-cyrene"
+        "id": "cyrene-africa"
     },
     "africa": {
         "x": 0.49635416666666665,
