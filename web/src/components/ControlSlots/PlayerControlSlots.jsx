@@ -7,5 +7,11 @@ import { ControlSlots } from './ControlSlots';
 export function PlayerControlSlots() {
     const { side } = useContext(GameContext);
 
-    return <ControlSlots side={side} locations={playerSlotsLocations} />;
+    return (
+        <ControlSlots
+            opponent={false}
+            side={side}
+            slots={playerSlotsLocations}
+        />
+    );
 }

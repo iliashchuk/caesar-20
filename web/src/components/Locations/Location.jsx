@@ -1,11 +1,12 @@
 import classnames from 'classnames';
 import { forwardRef, useContext } from 'react';
 
-import { SizingContext } from '../../context';
+import { SizingContext, TokenMovement } from '../../context';
 import styles from './Location.module.scss';
 
 function LocationWithoutRef({ location, classes, children }, ref) {
     const { locationSize } = useContext(SizingContext);
+    const {moveTokenTo} = useContext(TokenMovement)
 
     const style = {
         width: locationSize,
@@ -17,6 +18,7 @@ function LocationWithoutRef({ location, classes, children }, ref) {
 
     return (
         <div
+            onClick={() => moveTokenTo('control', location)}
             ref={ref}
             key={location.id}
             className={classnames(styles.location, classes)}

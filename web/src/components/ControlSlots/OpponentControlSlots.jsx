@@ -11,6 +11,10 @@ export function OpponentControlSlots() {
     const opponentSide = getOpponentSide(side);
 
     return (
-        <ControlSlots side={opponentSide} locations={opponentSlotsLocations} />
+        <ControlSlots
+            opponent
+            side={opponentSide}
+            slots={opponentSlotsLocations}
+        />
     );
 }

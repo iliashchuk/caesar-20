@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { useContext, useMemo } from 'react';
 
 import { SizingContext } from '../../context/Sizing';
@@ -27,7 +28,7 @@ function getImagePath(side, id) {
     return `${directory}/${file}.png`;
 }
 
-export function Token({ side, id, style, rotation, make3d = true }) {
+export function Token({ token: { side, id }, style, rotation, make3d = true }) {
     const { locationSize } = useContext(SizingContext);
 
     const imagePath = useMemo(() => getImagePath(side, id), [side, id]);
@@ -42,8 +43,9 @@ export function Token({ side, id, style, rotation, make3d = true }) {
             : '';
 
     const imageElement = (
-        <img
-            style={{ filter, rotate: rotation, ...style }}
+        <motion.img
+            style={{ filter, ...style }}
+            animate={{ rotate: rotation }}
             alt={`${side}-${id}`}
             className={styles.token}
             width={locationSize}

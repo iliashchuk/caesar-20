@@ -10,7 +10,7 @@ export function TokenCounter() {
 
     return (
         <div className={styles.container}>
-            <Token make3d={false} side={side} id="backside" />
+            <Token make3d={false} token={{ side, id: 'backside' }} />
             <div className={styles.counterOverlay}>{tokensRemaining}</div>
         </div>
     );

@@ -1,6 +1,7 @@
 import { useContext } from 'react';
 
 import { SizingContext } from '../../context';
+import { TokenMovementProvider } from '../../context';
 import { OpponentControlSlots, PlayerControlSlots } from '../ControlSlots';
 import { Hand } from '../Hand';
 import { AvailableLocations, EstablishedLocations } from '../Locations';
@@ -14,22 +15,24 @@ export function TurnManager() {
 
     return (
         <TokenDragContext>
-            <div
-                style={{ height: locationSize + 24 }}
-                className={styles.playerUi}
-            >
-                <TokenCounter />
-                <Hand />
-                <TurnButton />
-            </div>
-            {scale && (
-                <>
-                    <PlayerControlSlots />
-                    <OpponentControlSlots />
-                    <EstablishedLocations />
-                    <AvailableLocations />
-                </>
-            )}
+            <TokenMovementProvider>
+                <div
+                    style={{ height: locationSize + 24 }}
+                    className={styles.playerUi}
+                >
+                    <TokenCounter />
+                    <Hand />
+                    <TurnButton />
+                </div>
+                {scale && (
+                    <>
+                        <EstablishedLocations />
+                        <AvailableLocations />
+                        <PlayerControlSlots />
+                        <OpponentControlSlots />
+                    </>
+                )}
+            </TokenMovementProvider>
         </TokenDragContext>
     );
 }

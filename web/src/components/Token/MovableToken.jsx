@@ -39,7 +39,7 @@ export function MovableToken({ isMoving, rotation, token }) {
                 style={{
                     transition: 'rotate 0.4s',
                 }}
-                {...token}
+                token={token}
             />
         </div>
     );
