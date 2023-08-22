@@ -2,11 +2,7 @@ import { GameConnectionManager } from "./GameConnectionManager.js";
 import { Player } from "./Player.js";
 import { LocationId, PlayerInfluence, Side, User, Token } from "../types.js";
 import { getRandomBonusesForProvinces } from "../utils.js";
-import {
-    borderProvinceDictionary,
-    provinceBordersDictionary,
-    provinces,
-} from "../static/provinces.js";
+import { borderProvincesDictionary, provinces } from "../static/provinces.js";
 import { Province } from "./Province.js";
 
 export class Game {
@@ -84,14 +80,18 @@ export class Game {
     endUserTurn(
         user: User,
         { token, location }: { token: PlayerInfluence; location: LocationId }
-    ) {
+    ): Province | void {
         const activePlayer = this.players[user];
         activePlayer.endTurn(token.id);
         this.getOpponentPlayer(user).playersTurn = true;
 
-        const province = borderProvinceDictionary[location];
+        const provinces = borderProvincesDictionary[location].map(
+            (borderProvince) => this.provinces[borderProvince]
+        );
 
-        this.provinces[province].tryCloseBorder(location, activePlayer.side);
+        provinces.forEach((province) =>
+            province.tryCloseBorder(location, token)
+        );
 
         this.borders = { ...this.borders, [location]: token };
     }

@@ -163,12 +163,12 @@
         "type": "bonus",
         "id": "mauritania"
     },
-    "mauritania-sardinia": {
+    "sardinia-mauritania": {
         "x": 0.28125,
         "y": 0.5045896925458969,
         "angle": 6.7,
         "type": "ship",
-        "id": "mauritania-sardinia"
+        "id": "sardinia-mauritania"
     },
     "mauritania-numidia": {
         "x": 0.3026041666666667,

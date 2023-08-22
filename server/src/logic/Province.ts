@@ -1,5 +1,5 @@
 import { provinceBordersDictionary } from "../static/provinces.js";
-import { BonusToken, LocationId, Side } from "../types.js";
+import { BonusToken, LocationId, PlayerInfluence, Side } from "../types.js";
 
 export class Province {
     id: LocationId;
@@ -8,6 +8,7 @@ export class Province {
     closed: boolean = false;
     bonus: BonusToken;
     closedBy: Side;
+    power: Record<Side, number> = { [Side.CAESAR]: 0, [Side.POMPEY]: 0 };
 
     constructor(locationId: LocationId, bonus: BonusToken) {
         this.id = locationId;
@@ -15,13 +16,17 @@ export class Province {
         this.bonus = bonus;
     }
 
-    tryCloseBorder(border: LocationId, side: Side) {
+    tryCloseBorder(border: LocationId, token: PlayerInfluence) {
         if (this.borders.includes(border)) {
+            const isProvinceTop = border.split('-')[0] === this.id;
+            const useTopPower = (isProvinceTop ? !token.turned : token.turned)
+            this.power[token.side] = token.power[useTopPower ? 'top' : 'bottom'];
+
             this.closedBorders.push(border);
 
             if (this.borders.length === this.closedBorders.length) {
                 this.closed = true;
-                this.closedBy = side;
+                this.closedBy = token.side;
             }
 
             return true;
