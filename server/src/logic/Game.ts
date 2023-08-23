@@ -21,7 +21,7 @@ type StateChange = {
     location: LocationId;
     type: StateChangeType;
     side?: Side;
-    id: TokenId | Bonus;
+    token?: Token;
 };
 
 export class Game {
@@ -43,13 +43,13 @@ export class Game {
     get state(): Record<LocationId, Token> {
         const provinceState = Object.entries(this.provinces).reduce(
             (acc, [provinceId, province]) => {
-                if (province.closed) {
+                if (!province.closed) {
+                    acc[provinceId] = province.bonus;
+                } else if (province.controlledBy) {
                     acc[provinceId] = {
                         side: province.controlledBy,
                         id: "control",
                     };
-                } else {
-                    acc[provinceId] = province.bonus;
                 }
 
                 return acc;
@@ -131,15 +131,18 @@ export class Game {
             if (province.closed) {
                 this.unsortedStateChanges.push({
                     type: StateChangeType.BONUS,
-                    id: province.bonus.id,
+                    token: province.bonus,
                     location: province.id,
+                    side: province.closedBy,
                 });
-                this.unsortedStateChanges.push({
-                    type: StateChangeType.CONTROL,
-                    id: "control",
-                    location: province.id,
-                    side: province.controlledBy,
-                });
+
+                if (province.controlledBy) {
+                    this.unsortedStateChanges.push({
+                        type: StateChangeType.CONTROL,
+                        location: province.id,
+                        side: province.controlledBy,
+                    });
+                }
             }
         });
 
