@@ -1,9 +1,20 @@
 .hand {
     padding: 12px;
-    border-radius: 12px 12px 0px 0px;
     display: flex;
     gap: 4px;
-    height: 100%;
     box-sizing: border-box;
     background-color: papayawhip;
+}
+
+.player {
+    height: 100%;
+    border-radius: 12px 12px 0px 0px;
+}
+
+.opponent {
+    border-radius: 12px 12px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }

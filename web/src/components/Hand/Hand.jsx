@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import { useContext } from 'react';
 
 import { ActiveState } from '../../context';
@@ -8,7 +9,7 @@ export function Hand() {
     const { tokensInHand } = useContext(ActiveState);
 
     return (
-        <div className={styles.hand}>
+        <div className={classnames(styles.hand, styles.player)}>
             {tokensInHand.map((token) => (
                 <PlayerToken key={token.id} token={token} />
             ))}

@@ -9,6 +9,7 @@ function TurnStateProvider({ initialState, initialPlayer, children }) {
         initialPlayer.tokensRemaining,
     );
     const [playerTokens, setPlayerTokens] = useState(initialPlayer.hand);
+    const [opponentTokenNumber, setOpponentTokenNumber] = useState(2);
     const [establishedState, setEstablishedState] = useState(initialState);
     const [playersTurn, setPlayersTurn] = useState(initialPlayer.playersTurn);
     const { socket } = useContext(GameContext);
@@ -38,6 +39,7 @@ function TurnStateProvider({ initialState, initialPlayer, children }) {
                 playerTokens,
                 tokensRemaining,
                 establishedState,
+                opponentTokenNumber,
             }}
         >
             {children}

@@ -4,6 +4,7 @@ import { SizingContext } from '../../context';
 import { TokenMovementProvider } from '../../context';
 import { OpponentControlSlots, PlayerControlSlots } from '../ControlSlots';
 import { Hand } from '../Hand';
+import { OpponentHand } from '../Hand/OpponentHand';
 import { AvailableLocations, EstablishedLocations } from '../Locations';
 import { TokenCounter } from '../TokenCounter';
 import { TokenDragContext } from '../TokenDragContext/TokenDragContext';
@@ -16,6 +17,7 @@ export function TurnManager() {
     return (
         <TokenDragContext>
             <TokenMovementProvider>
+                <OpponentHand />
                 <div
                     style={{ height: locationSize + 24 }}
                     className={styles.playerUi}
