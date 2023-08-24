@@ -6,19 +6,26 @@ import styles from './Location.module.scss';
 
 function LocationWithoutRef({ location, classes, children }, ref) {
     const { locationSize } = useContext(SizingContext);
-    const {moveTokenTo} = useContext(TokenMovement)
+    const { moveControlToken, moveOpponentToken } = useContext(TokenMovement);
 
     const style = {
         width: locationSize,
         height: locationSize,
-        transform: `translate(-${locationSize / 2}px,-${locationSize / 2}px`,
-        left: location.x * 100 + '%',
-        top: location.y * 100 + '%',
+        left: `calc(${location.x * 100}% - ${locationSize / 2}px)`,
+        top: `calc(${location.y * 100}% - ${locationSize / 2}px)`,
     };
 
     return (
         <div
-            onClick={() => moveTokenTo('control', location)}
+            // this is debug
+            onClick={() =>
+                location.id.includes('-')
+                    ? moveOpponentToken(
+                          { side: 'pompey', id: 'backside' },
+                          location,
+                      )
+                    : moveControlToken('caesar', location)
+            }
             ref={ref}
             key={location.id}
             className={classnames(styles.location, classes)}

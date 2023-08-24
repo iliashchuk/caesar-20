@@ -1,5 +1,5 @@
-import classnames from 'classnames';
 import { useContext } from 'react';
+import classnames from 'classnames';
 
 import { ActiveState } from '../../context';
 import { PlayerToken } from '../Token';

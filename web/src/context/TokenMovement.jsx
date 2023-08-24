@@ -6,73 +6,76 @@ import { GameContext } from './GameContext';
 const TokenMovement = createContext();
 
 function TokenMovementProvider({ children }) {
-    const [movingToken, setMovingToken] = useState();
-    const [destination, setDestination] = useState();
-    const [isMoving, setIsMoving] = useState(false);
-    const [pendingChanges, setPendingChanges] = useState([]);
-    const [activeChange, setActiveChange] = useState();
     const { socket } = useContext(GameContext);
+    const [activeMovement, setActiveMovement] = useState();
+    const [pendingStateChanges, setPendingStateChanges] = useState([]);
 
     useEffect(() => {
         socket.on('state-changes', (stateChanges) => {
-            setPendingChanges(stateChanges);
+            console.log('stateChanges signal', stateChanges);
+            setPendingStateChanges([...pendingStateChanges, ...stateChanges]);
         });
     }, [socket]);
 
     useEffect(() => {
-        console.log(pendingChanges, activeChange);
-        if (pendingChanges.length && !activeChange) {
-            setActiveChange(pendingChanges[0]);
-            setPendingChanges(pendingChanges.slice(1));
-        }
+        console.log(
+            'pendingChangesEffect',
+            pendingStateChanges,
+            activeMovement,
+        );
 
-        let timeout;
-        if (activeChange) {
-            if (activeChange.type === 'bonus') {
-                timeout = setTimeout(() => {
-                    console.log(activeChange);
-                    setActiveChange();
-                }, 1000);
-                return;
+        if (pendingStateChanges.length && !activeMovement) {
+            const { type, location, token, side } = pendingStateChanges[0];
+
+            if (type === 'opponent') {
+                moveOpponentToken(token, locations[location]);
             }
 
-            if (activeChange.type === 'control') {
-                moveTokenTo(
-                    { ...activeChange },
-                    locations[activeChange.location],
-                );
+            if (type === 'bonus') {
+                console.log('bonus', token);
             }
+
+            if (type === 'control') {
+                moveControlToken(side, locations[location]);
+            }
+
+            setPendingStateChanges(pendingStateChanges.slice(1));
         }
 
-        if (!pendingChanges.length && !activeChange) {
-            console.log('pending cleared!', pendingChanges);
+        if (!pendingStateChanges.length && !activeMovement) {
+            console.log('No pending animation changes!');
             socket.emit('state-change-animated');
         }
+    }, [socket, pendingStateChanges, activeMovement]);
 
-        return () => clearTimeout(timeout);
-    }, [pendingChanges, activeChange]);
-
-    function moveTokenTo(token, location) {
-        setMovingToken(token);
-        setDestination(location);
-        setIsMoving(true);
+    function moveOpponentToken(token, destination) {
+        console.log('moveOpponentToken');
+        setActiveMovement({
+            origin: 'opponent',
+            token,
+            destination,
+        });
+    }
+    function moveControlToken(side, destination) {
+        setActiveMovement({
+            origin: 'control',
+            token: { id: 'control', side },
+            destination,
+        });
     }
 
-    function finishMovingToken() {
-        setMovingToken();
-        setDestination();
-        setIsMoving(false);
-        setActiveChange();
+    function finishMovement() {
+        console.log(`finished ${activeMovement.origin} movement`);
+        setActiveMovement();
     }
 
     return (
         <TokenMovement.Provider
             value={{
-                movingToken,
-                destination,
-                isMoving,
-                moveTokenTo,
-                finishMovingToken,
+                activeMovement,
+                moveControlToken,
+                moveOpponentToken,
+                finishMovement,
             }}
         >
             {children}

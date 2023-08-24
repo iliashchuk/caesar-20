@@ -1,27 +1,41 @@
 import classnames from 'classnames';
 import { useContext } from 'react';
 
-import { GameContext, SizingContext, TurnState } from '../../context';
+import { GameContext, TokenMovement, TurnState } from '../../context';
 import { getOpponentSide } from '../../utils';
-import { Token } from '../Token';
+import { MovingToken, Token } from '../Token';
 import styles from './Hand.module.scss';
 
 export function OpponentHand() {
     const { opponentTokenNumber } = useContext(TurnState);
     const { side } = useContext(GameContext);
-    const { locationSize } = useContext(SizingContext);
+    const { activeMovement } = useContext(TokenMovement);
+
+    const opponentMovingTokenLocation = {
+        x: 0.5,
+        y: 0,
+    };
+
+    const isOpponentTokenMoving =
+        activeMovement && activeMovement.origin === 'opponent';
+
+    const blankTokens = Array.from(
+        Array(opponentTokenNumber - (isOpponentTokenMoving ? 1 : 0)).keys(),
+    );
 
     return (
-        <div
-            className={classnames(styles.hand, styles.opponent)}
-            style={{ height: locationSize + 24 }}
-        >
-            {Array.from(Array(opponentTokenNumber).keys()).map((key) => (
-                <Token
-                    key={key}
-                    token={{ side: getOpponentSide(side), id: 'backside' }}
-                />
-            ))}
-        </div>
+        <>
+            {isOpponentTokenMoving && (
+                <MovingToken initial={opponentMovingTokenLocation} />
+            )}
+            <div className={classnames(styles.hand, styles.opponent)}>
+                {blankTokens.map((key) => (
+                    <Token
+                        key={key}
+                        token={{ side: getOpponentSide(side), id: 'backside' }}
+                    />
+                ))}
+            </div>
+        </>
     );
 }

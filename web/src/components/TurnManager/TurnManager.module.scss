@@ -1,11 +1,15 @@
-.playerUi {
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
+.ui {
     display: flex;
-    justify-content: space-between;
-    gap: 12px;
+    position: absolute;
+    justify-content: center;
     align-items: center;
-    z-index: 2;
+    z-index: 10;
+    left: 0;
+    right: 0;
+}
+
+.playerUi {
+    bottom: 0;
+    display: flex;
+    gap: 12px;
 }

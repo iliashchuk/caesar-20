@@ -3,21 +3,31 @@ import { useContext } from 'react';
 
 import { SizingContext, TokenMovement } from '../../context';
 import { Token } from './Token';
+import styles from './Token.module.scss';
 
-export function MovingToken({ initialLocation, token, finishMoving }) {
-    const { scale } = useContext(SizingContext);
-    const { destination } = useContext(TokenMovement);
+export function MovingToken({ initial, token, finishMovement }) {
+    const { getScaledPosition, getPositionOffsetByTokenRadius } =
+        useContext(SizingContext);
+    const { activeMovement, finishMovement: defaultFinishMovement } =
+        useContext(TokenMovement);
 
     return (
         <motion.div
-            onAnimationComplete={finishMoving}
-            animate={{
-                x: (destination.x - initialLocation.x) * scale.width,
-                y: (destination.y - initialLocation.y) * scale.height,
+            className={styles.movingToken}
+            initial={{
+                ...getPositionOffsetByTokenRadius(getScaledPosition(initial)),
             }}
-            transition={{ duration: 3, type: 'spring' }}
+            onAnimationComplete={
+                finishMovement ? finishMovement : defaultFinishMovement
+            }
+            animate={{
+                ...getPositionOffsetByTokenRadius(
+                    getScaledPosition(activeMovement.destination),
+                ),
+            }}
+            transition={{ duration: 5, type: 'spring' }}
         >
-            <Token token={token}></Token>
+            <Token token={token ? token : activeMovement.token}></Token>
         </motion.div>
     );
 }

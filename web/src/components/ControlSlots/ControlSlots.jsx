@@ -5,33 +5,32 @@ import { Location } from '../Locations';
 import { MovingToken, Token } from '../Token';
 
 export function ControlSlots({ side, slots }) {
-    const { movingToken, finishMovingToken } = useContext(TokenMovement);
+    const { activeMovement, finishMovement } = useContext(TokenMovement);
     const [actualSlots, setActualSlots] = useState(slots);
     const [movingTokenIndex, setMovingTokenIndex] = useState();
 
     useEffect(() => {
-        console.log(movingToken);
         if (
-            movingToken &&
-            movingToken.id === 'control' &&
-            movingToken.side === side
+            activeMovement &&
+            activeMovement.origin === 'control' &&
+            activeMovement.token.side === side
         ) {
-            console.log('set animation');
             setMovingTokenIndex(actualSlots.length - 1);
         }
-    }, [movingToken]);
+    }, [activeMovement]);
 
-    function finishMoving() {
-        finishMovingToken();
+    function finishControlMovement() {
+        finishMovement();
         setActualSlots(actualSlots.slice(0, actualSlots.length - 1));
+        setMovingTokenIndex();
     }
 
     return actualSlots.map((location, index) => (
         <Location key={location.id} location={location}>
-            {index === movingTokenIndex ? (
+            {activeMovement && index === movingTokenIndex ? (
                 <MovingToken
-                    initialLocation={location}
-                    finishMoving={finishMoving}
+                    initial={location}
+                    finishMovement={finishControlMovement}
                     token={{ side, id: 'control' }}
                 />
             ) : (

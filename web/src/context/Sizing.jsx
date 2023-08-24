@@ -10,9 +10,24 @@ function SizingProvider({ children }) {
     const locationRadius = locationRelativeSize * scale.width;
     const locationSize = locationRadius * 2;
 
+    function getScaledPosition({ x, y }) {
+        return { x: x * scale.width, y: y * scale.height };
+    }
+
+    function getPositionOffsetByTokenRadius({ x, y }) {
+        return { x: x - locationRadius, y: y - locationRadius };
+    }
+
     return (
         <SizingContext.Provider
-            value={{ scale, setScale, locationSize, locationRadius }}
+            value={{
+                scale,
+                locationSize,
+                locationRadius,
+                setScale,
+                getScaledPosition,
+                getPositionOffsetByTokenRadius,
+            }}
         >
             {children}
         </SizingContext.Provider>

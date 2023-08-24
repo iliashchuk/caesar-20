@@ -1,3 +1,4 @@
+import classnames from 'classnames';
 import { useContext } from 'react';
 
 import { SizingContext } from '../../context';
@@ -17,14 +18,22 @@ export function TurnManager() {
     return (
         <TokenDragContext>
             <TokenMovementProvider>
-                <OpponentHand />
                 <div
                     style={{ height: locationSize + 24 }}
-                    className={styles.playerUi}
+                    className={classnames(styles.ui, styles.playerUi)}
                 >
                     <TokenCounter />
                     <Hand />
                     <TurnButton />
+                </div>
+                <div
+                    className={styles.ui}
+                    style={{
+                        height: locationSize + 24,
+                        top: -(locationSize + 24) / 2,
+                    }}
+                >
+                    <OpponentHand />
                 </div>
                 {scale && (
                     <>

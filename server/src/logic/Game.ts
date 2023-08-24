@@ -1,14 +1,6 @@
 import { GameConnectionManager } from "./GameConnectionManager.js";
 import { Player } from "./Player.js";
-import {
-    LocationId,
-    PlayerInfluence,
-    Side,
-    User,
-    Token,
-    TokenId,
-    Bonus,
-} from "../types.js";
+import { LocationId, PlayerInfluence, Side, User, Token } from "../types.js";
 import { getRandomBonusesForProvinces } from "../utils.js";
 import { borderProvincesDictionary, provinces } from "../static/provinces.js";
 import { Province } from "./Province.js";
