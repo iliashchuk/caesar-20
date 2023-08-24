@@ -70,7 +70,6 @@ export class Game {
                 }
             }
         );
-        console.log(changesWithBonusesFirst);
 
         return changesWithBonusesFirst;
     }

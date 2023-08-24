@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import { useContext, useMemo } from 'react';
 
 import { SizingContext } from '../../context/Sizing';
@@ -47,7 +48,9 @@ export function Token({
             : '';
 
     const imageElement = (
-        <img
+        <motion.img
+            animate={{ rotate: rotation }}
+            transition={{ type: 'spring', bounce: 0.4 }}
             style={{ filter, rotate: rotation, ...style }}
             alt={`${side}-${id}`}
             className={styles.token}

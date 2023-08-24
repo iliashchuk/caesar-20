@@ -14,7 +14,6 @@ function TokenMovementProvider({ children }) {
 
     useEffect(() => {
         socket.on('state-changes', (stateChanges) => {
-            console.log(stateChanges);
             setPendingStateChanges([...pendingStateChanges, ...stateChanges]);
         });
     }, [socket]);
