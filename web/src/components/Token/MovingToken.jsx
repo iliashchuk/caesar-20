@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
-import { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import { useContext, useLayoutEffect, useMemo, useState } from 'react';
 
 import { SizingContext, TokenMovement } from '../../context';
 import { Token } from './Token';
 import styles from './Token.module.scss';
 
-export function MovingToken({ initial, token, finishMovement }) {
+export function MovingToken({ initial, finishMovement }) {
     const { getScaledPosition, getPositionOffsetByTokenRadius } =
         useContext(SizingContext);
     const { activeMovement, finishMovement: defaultFinishMovement } =
@@ -15,6 +15,26 @@ export function MovingToken({ initial, token, finishMovement }) {
     useLayoutEffect(() => {
         setMovement(activeMovement);
     }, []);
+
+    const rotate = useMemo(() => {
+        if (!movement) {
+            return;
+        }
+
+        const { destination, token } = movement;
+
+        if (!token.turned) {
+            return destination.angle;
+        }
+
+        const positivelyAdjustedAngle = destination.angle + 180;
+
+        if (positivelyAdjustedAngle >= 180) {
+            return destination.angle - 180;
+        }
+
+        return positivelyAdjustedAngle;
+    }, [movement]);
 
     return (
         movement && (
@@ -37,6 +57,7 @@ export function MovingToken({ initial, token, finishMovement }) {
                     ...getPositionOffsetByTokenRadius(
                         getScaledPosition(movement.destination),
                     ),
+                    boxShadow: '10px 12px #000000aa',
                     scale: 1.5,
                 }}
                 transition={{
@@ -46,7 +67,7 @@ export function MovingToken({ initial, token, finishMovement }) {
                 }}
                 exit={{
                     scale: 1,
-                    rotate: movement.destination.angle,
+                    boxShadow: '0px 0px #000000',
                     transition: {
                         type: 'string',
                         duration: 0.3,
@@ -54,7 +75,12 @@ export function MovingToken({ initial, token, finishMovement }) {
                     exitTransition: true,
                 }}
             >
-                <Token token={token ? token : movement.token}></Token>
+                <motion.div
+                    animate={{ rotate }}
+                    transition={{ delay: 1, duration: 0.3 }}
+                >
+                    <Token token={movement.token} make3d={false}></Token>
+                </motion.div>
             </motion.div>
         )
     );

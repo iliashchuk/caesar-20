@@ -34,7 +34,6 @@ export function ControlSlots({ side, slots }) {
                         key={location.id}
                         initial={location}
                         finishMovement={finishControlMovement}
-                        token={{ side, id: 'control' }}
                     />
                 ) : (
                     <Location key={location.id} location={location}>

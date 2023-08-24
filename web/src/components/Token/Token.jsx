@@ -27,7 +27,12 @@ function getImagePath(side, id) {
     return `${directory}/${file}.png`;
 }
 
-export function Token({ token: { side, id }, style, rotation, make3d = true }) {
+export function Token({
+    token: { side, id },
+    style,
+    rotation,
+    make3d = false,
+}) {
     const { locationSize } = useContext(SizingContext);
 
     const imagePath = useMemo(() => getImagePath(side, id), [side, id]);
