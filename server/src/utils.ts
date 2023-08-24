@@ -1,5 +1,5 @@
 import { provincesBarringItalia } from "./static/provinces.js";
-import { Bonus, BonusToken, LocationId, User } from "./types.js";
+import { Bonus, BonusToken, ControlToken, LocationId, Side, User } from "./types.js";
 
 export function shortenId(id: string): User {
     return id.slice(0, 8);
@@ -25,10 +25,10 @@ export function shuffle<T>(array: T[]): T[] {
     return array;
 }
 
-export function getRandomBonusesForProvinces(): Record<LocationId, BonusToken> {
+export function getRandomBonusesForProvinces(): Record<LocationId, Bonus> {
     const shuffledProvinces = shuffle([...provincesBarringItalia]);
     const bonusesForProvincesBarringItalia = shuffledProvinces.reduce<
-        Record<LocationId, BonusToken>
+        Record<LocationId, Bonus>
     >((acc, province, index) => {
         let bonus;
         switch (true) {
@@ -45,13 +45,16 @@ export function getRandomBonusesForProvinces(): Record<LocationId, BonusToken> {
                 bonus = Bonus.SENATE;
         }
 
-        return { ...acc, [province]: { side: "bonus", id: bonus } };
+        return { ...acc, [province]: bonus };
     }, {});
 
-    bonusesForProvincesBarringItalia["italia"] = {
-        side: "bonus",
-        id: Bonus.SENATE,
-    };
+    bonusesForProvincesBarringItalia["italia"] = Bonus.SENATE;
 
     return bonusesForProvincesBarringItalia;
+}
+export function makeBonusToken(bonus: Bonus): BonusToken {
+    return { id: bonus, side: "bonus" };
+}
+export function makeControlToken(side: Side): ControlToken {
+    return { id: "control", side };
 }

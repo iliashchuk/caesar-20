@@ -39,6 +39,18 @@ export type PlayerClientData = {
     playersTurn: boolean;
 };
 
+export enum StateChangeType {
+    BONUS = "bonus",
+    CONTROL = "control",
+}
+
+export type StateChange = {
+    location: LocationId;
+    type: StateChangeType;
+    side?: Side;
+    token?: Token;
+};
+
 export type PlayerInfluence = Influence & { side: Side; turned?: boolean };
 
 export type BonusToken = {
@@ -46,4 +58,9 @@ export type BonusToken = {
     side: "bonus";
 };
 
-export type Token = PlayerInfluence | BonusToken;
+export type ControlToken = {
+    id: "control";
+    side: Side;
+};
+
+export type Token = PlayerInfluence | BonusToken | ControlToken;
