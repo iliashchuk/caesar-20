@@ -1,3 +1,4 @@
+import { AnimatePresence } from 'framer-motion';
 import { useContext, useEffect, useState } from 'react';
 
 import { TokenMovement } from '../../context';
@@ -25,18 +26,22 @@ export function ControlSlots({ side, slots }) {
         setMovingTokenIndex();
     }
 
-    return actualSlots.map((location, index) =>
-        activeMovement && index === movingTokenIndex ? (
-            <MovingToken
-                key={location.id}
-                initial={location}
-                finishMovement={finishControlMovement}
-                token={{ side, id: 'control' }}
-            />
-        ) : (
-            <Location key={location.id} location={location}>
-                <Token token={{ side, id: 'control' }} make3d={false} />
-            </Location>
-        ),
+    return (
+        <AnimatePresence>
+            {actualSlots.map((location, index) =>
+                activeMovement && index === movingTokenIndex ? (
+                    <MovingToken
+                        key={location.id}
+                        initial={location}
+                        finishMovement={finishControlMovement}
+                        token={{ side, id: 'control' }}
+                    />
+                ) : (
+                    <Location key={location.id} location={location}>
+                        <Token token={{ side, id: 'control' }} make3d={false} />
+                    </Location>
+                ),
+            )}
+        </AnimatePresence>
     );
 }

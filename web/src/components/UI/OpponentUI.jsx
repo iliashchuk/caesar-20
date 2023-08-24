@@ -1,3 +1,4 @@
+import { AnimatePresence } from 'framer-motion';
 import { useContext } from 'react';
 
 import { SizingContext, TokenMovement } from '../../context';
@@ -28,9 +29,11 @@ export function OpponentUI() {
             >
                 <OpponentHand isOpponentTokenMoving={isOpponentTokenMoving} />
             </div>
-            {isOpponentTokenMoving && (
-                <MovingToken initial={opponentMovingTokenLocation} />
-            )}
+            <AnimatePresence>
+                {isOpponentTokenMoving && (
+                    <MovingToken initial={opponentMovingTokenLocation} />
+                )}
+            </AnimatePresence>
         </>
     );
 }
