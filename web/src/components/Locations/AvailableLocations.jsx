@@ -5,14 +5,14 @@ import locations from '../../static/locations.json';
 import { DroppableLocation } from './DroppableLocation';
 
 export function AvailableLocations() {
-    const { establishedState } = useContext(TurnState);
+    const { establishedLocationState } = useContext(TurnState);
 
     const availableLocations = Object.values(locations).filter((location) => {
         if (!location.id) {
             return;
         }
 
-        if (Object.keys(establishedState).includes(location.id)) {
+        if (Object.keys(establishedLocationState).includes(location.id)) {
             return false;
         }
 

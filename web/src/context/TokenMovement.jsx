@@ -2,28 +2,23 @@ import { createContext, useContext, useEffect, useState } from 'react';
 
 import locations from '../static/locations.json';
 import { GameContext } from './GameContext';
+import { TurnState } from './TurnState';
 
 const TokenMovement = createContext();
 
 function TokenMovementProvider({ children }) {
     const { socket } = useContext(GameContext);
+    const { updateAnimatedState } = useContext(TurnState);
     const [activeMovement, setActiveMovement] = useState();
     const [pendingStateChanges, setPendingStateChanges] = useState([]);
 
     useEffect(() => {
         socket.on('state-changes', (stateChanges) => {
-            console.log('stateChanges signal', stateChanges);
             setPendingStateChanges([...pendingStateChanges, ...stateChanges]);
         });
     }, [socket]);
 
     useEffect(() => {
-        console.log(
-            'pendingChangesEffect',
-            pendingStateChanges,
-            activeMovement,
-        );
-
         if (pendingStateChanges.length && !activeMovement) {
             const { type, location, token, side } = pendingStateChanges[0];
 
@@ -49,7 +44,6 @@ function TokenMovementProvider({ children }) {
     }, [socket, pendingStateChanges, activeMovement]);
 
     function moveOpponentToken(token, destination) {
-        console.log('moveOpponentToken');
         setActiveMovement({
             origin: 'opponent',
             token,
@@ -65,7 +59,9 @@ function TokenMovementProvider({ children }) {
     }
 
     function finishMovement() {
-        console.log(`finished ${activeMovement.origin} movement`);
+        updateAnimatedState({
+            [activeMovement.destination.id]: activeMovement.token,
+        });
         setActiveMovement();
     }
 

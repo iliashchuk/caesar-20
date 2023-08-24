@@ -16,10 +16,6 @@ export function MovingToken({ initial, token, finishMovement }) {
         setMovement(activeMovement);
     }, []);
 
-    useEffect(() => {
-        return () => console.log('unmount');
-    });
-
     return (
         movement && (
             <motion.div

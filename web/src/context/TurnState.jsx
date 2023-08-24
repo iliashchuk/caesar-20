@@ -11,18 +11,9 @@ function TurnStateProvider({ initialState, initialPlayer, children }) {
     const [playerTokens, setPlayerTokens] = useState(initialPlayer.hand);
     const [opponentTokenNumber, setOpponentTokenNumber] = useState(2);
     const [establishedState, setEstablishedState] = useState(initialState);
+    const [animatedState, setAnimatedState] = useState({});
     const [playersTurn, setPlayersTurn] = useState(initialPlayer.playersTurn);
     const { socket } = useContext(GameContext);
-
-    useEffect(() => {
-        socket.on('established', (state) => setEstablishedState(state));
-
-        socket.on('player', ({ hand, tokensRemaining, playersTurn }) => {
-            setPlayerTokens(hand);
-            setTokensRemaining(tokensRemaining);
-            setPlayersTurn(playersTurn);
-        });
-    }, [socket]);
 
     function endTurn(location, token) {
         socket.emit('end-turn', {
@@ -31,15 +22,38 @@ function TurnStateProvider({ initialState, initialPlayer, children }) {
         });
     }
 
+    function updateAnimatedState(state) {
+        setAnimatedState({ ...animatedState, ...state });
+    }
+
+    function establishState(state) {
+        setAnimatedState();
+        setEstablishedState(state);
+    }
+
+    useEffect(() => {
+        socket.on('established', establishState);
+
+        socket.on('player', ({ hand, tokensRemaining, playersTurn }) => {
+            setPlayerTokens(hand);
+            setTokensRemaining(tokensRemaining);
+            setPlayersTurn(playersTurn);
+        });
+    }, [socket]);
+
     return (
         <TurnState.Provider
             value={{
-                endTurn,
                 playersTurn,
                 playerTokens,
                 tokensRemaining,
-                establishedState,
                 opponentTokenNumber,
+                updateAnimatedState,
+                endTurn,
+                establishedLocationState: {
+                    ...establishedState,
+                    ...animatedState,
+                },
             }}
         >
             {children}

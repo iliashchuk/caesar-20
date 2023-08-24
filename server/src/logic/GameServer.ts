@@ -34,7 +34,6 @@ export function createGameServer(io: Server) {
         });
 
         socket.on("state-change-animated", () => {
-            console.log("state-change-animated", user);
             socket.emit("player", game.players[user].clientData);
             socket.emit("established", game.state);
         });
