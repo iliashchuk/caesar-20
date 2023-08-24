@@ -1,8 +1,8 @@
-import { useContext } from 'react';
 import classnames from 'classnames';
+import { useContext } from 'react';
 
-import { ActiveState } from '../../context';
-import { PlayerToken } from '../Token';
+import { ActiveState } from '../../../context';
+import { PlayerToken } from '../../Token';
 import styles from './Hand.module.scss';
 
 export function Hand() {

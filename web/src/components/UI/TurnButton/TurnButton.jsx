@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { ActiveState, SizingContext, TurnState } from '../../context';
+import { ActiveState, SizingContext, TurnState } from '../../../context';
 import styles from './TurnButton.module.scss';
 
 export function TurnButton() {

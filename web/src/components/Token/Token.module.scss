@@ -33,8 +33,9 @@
     }
 }
 
-.movingToken {
+.tokenMovement {
     top: 0;
     left: 0;
-    position: fixed;
+    position: absolute;
+    z-index: 3;
 }

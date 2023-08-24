@@ -3,7 +3,7 @@ import { useContext, useMemo, useState } from 'react';
 
 import { ActiveState, SizingContext } from '../../context';
 import { createCircleCollisionDetectionForRadius } from '../../static/circleCollision';
-import { MovableToken } from '../Token/MovableToken';
+import { Token } from '../Token/Token';
 
 export function TokenDragContext({ children }) {
     const [movingToken, setMovingToken] = useState(false);
@@ -43,19 +43,8 @@ export function TokenDragContext({ children }) {
             onDragEnd={handleDragEnd}
             onDragStart={handleDragStart}
         >
-            <DragOverlay
-                dropAnimation={{
-                    duration: 250,
-                    easing: 'ease-out',
-                }}
-            >
-                {movingToken && (
-                    <MovableToken
-                        rotation={0}
-                        isMoving={!!movingToken}
-                        token={movingToken}
-                    />
-                )}
+            <DragOverlay>
+                {movingToken && <Token token={movingToken} make3d />}
             </DragOverlay>
             {children}
         </DndContext>

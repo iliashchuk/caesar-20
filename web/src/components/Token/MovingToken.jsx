@@ -13,7 +13,7 @@ export function MovingToken({ initial, token, finishMovement }) {
 
     return (
         <motion.div
-            className={styles.movingToken}
+            className={styles.tokenMovement}
             initial={{
                 ...getPositionOffsetByTokenRadius(getScaledPosition(initial)),
             }}
@@ -25,7 +25,7 @@ export function MovingToken({ initial, token, finishMovement }) {
                     getScaledPosition(activeMovement.destination),
                 ),
             }}
-            transition={{ duration: 5, type: 'spring' }}
+            transition={{ duration: 1.5, type: 'spring' }}
         >
             <Token token={token ? token : activeMovement.token}></Token>
         </motion.div>

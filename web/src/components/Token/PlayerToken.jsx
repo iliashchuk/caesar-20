@@ -3,7 +3,7 @@ import { CSS } from '@dnd-kit/utilities';
 import { useContext } from 'react';
 
 import { ActiveState } from '../../context';
-import { MovableToken } from './MovableToken';
+import { Token } from './Token';
 import styles from './Token.module.scss';
 
 export function PlayerToken({ token, rotation }) {
@@ -29,7 +29,7 @@ export function PlayerToken({ token, rotation }) {
             {...listeners}
             {...attributes}
         >
-            {!isDragging && <MovableToken rotation={rotation} token={token} />}
+            {!isDragging && <Token rotation={rotation} token={token} />}
         </div>
     );
 }

@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 
-import { GameContext, TurnState } from '../../context';
-import { Token } from '../Token/Token';
+import { GameContext, TurnState } from '../../../context';
+import { Token } from '../../Token';
 import styles from './TokenCounter.module.scss';
 
 export function TokenCounter() {
