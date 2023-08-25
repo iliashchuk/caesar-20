@@ -25,8 +25,12 @@ export function ControlSlots({ side, slots, controlNumber }) {
     }, [activeMovement]);
 
     useEffect(() => {
-        setActualSlots(slots.slice(0, WinningControlNumber - controlNumber));
-    }, [slots, controlNumber]);
+        if (!activeMovement) {
+            setActualSlots(
+                slots.slice(0, WinningControlNumber - controlNumber),
+            );
+        }
+    }, [slots, controlNumber, activeMovement]);
 
     function finishControlMovement() {
         finishMovement();
