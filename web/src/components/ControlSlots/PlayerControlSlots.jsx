@@ -1,15 +1,16 @@
 import { useContext } from 'react';
 
-import { GameContext } from '../../context';
+import { Control, GameContext } from '../../context';
 import playerSlotsLocations from '../../static/player-control-slots.json';
 import { ControlSlots } from './ControlSlots';
 
 export function PlayerControlSlots() {
     const { side } = useContext(GameContext);
+    const { controlNumber } = useContext(Control);
 
     return (
         <ControlSlots
-            opponent={false}
+            controlNumber={controlNumber}
             side={side}
             slots={playerSlotsLocations}
         />

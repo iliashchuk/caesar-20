@@ -21,6 +21,7 @@ import { Province } from "./Province.js";
 export class Game {
     inProgress: boolean = false;
     players: Record<User, Player> = {};
+    playersBySide: Record<Side, Player>;
     opponents: Record<User, User> = {};
     connectionManager: GameConnectionManager = new GameConnectionManager();
     provinces: Record<LocationId, Province> = {};
@@ -93,18 +94,25 @@ export class Game {
         }
     }
 
-    start() {
-        this.inProgress = true;
-        this.initProvinces();
-
+    private initPlayers() {
         const users = this.connectionManager.users;
         this.opponents[users[0]] = users[1];
         this.opponents[users[1]] = users[0];
 
-        this.players[users[0]] = new Player(Side.CAESAR);
-        this.players[users[1]] = new Player(Side.POMPEY);
+        const caesar = new Player(Side.CAESAR);
+        const pompey = new Player(Side.POMPEY);
+        this.players[users[0]] = caesar;
+        this.players[users[1]] = pompey;
+
+        this.playersBySide = { [Side.CAESAR]: caesar, [Side.POMPEY]: pompey };
 
         this.players[users[0]].playersTurn = true;
+    }
+
+    start() {
+        this.inProgress = true;
+        this.initProvinces();
+        this.initPlayers();
     }
 
     getOpponentPlayer(user) {
@@ -130,6 +138,10 @@ export class Game {
                 });
 
                 if (province.controlledBy) {
+                    const controllingPlayer =
+                        this.playersBySide[province.controlledBy];
+                    controllingPlayer.establishControl();
+
                     this.unsortedStateChanges.push({
                         type: StateChangeType.CONTROL,
                         location: province.id,
@@ -155,6 +167,8 @@ export class Game {
 
                     if (controlledBorders.length) {
                         controlledBorders.forEach((border) => {
+                            controllingPlayer.establishControl();
+
                             this.unsortedStateChanges.push({
                                 type: StateChangeType.CONTROL,
                                 location: border,

@@ -5,9 +5,13 @@ import { TokenMovement } from '../../context';
 import { Location } from '../Locations';
 import { MovingToken, Token } from '../Token';
 
-export function ControlSlots({ side, slots }) {
+const WinningControlNumber = 12;
+
+export function ControlSlots({ side, slots, controlNumber }) {
     const { activeMovement, finishMovement } = useContext(TokenMovement);
-    const [actualSlots, setActualSlots] = useState(slots);
+    const [actualSlots, setActualSlots] = useState(
+        slots.slice(0, WinningControlNumber - controlNumber),
+    );
     const [movingTokenIndex, setMovingTokenIndex] = useState();
 
     useEffect(() => {
@@ -19,6 +23,10 @@ export function ControlSlots({ side, slots }) {
             setMovingTokenIndex(actualSlots.length - 1);
         }
     }, [activeMovement]);
+
+    useEffect(() => {
+        setActualSlots(slots.slice(0, WinningControlNumber - controlNumber));
+    }, [slots, controlNumber]);
 
     function finishControlMovement() {
         finishMovement();

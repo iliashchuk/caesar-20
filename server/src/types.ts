@@ -35,6 +35,7 @@ export type Influence = {
 export type PlayerClientData = {
     side: Side;
     hand: PlayerInfluence[];
+    controls: number;
     tokensRemaining: number;
     playersTurn: boolean;
 };

@@ -2,6 +2,7 @@ import { useContext } from 'react';
 
 import {
     ActiveStateProvider,
+    ControlProvider,
     GameContext,
     SizingContext,
     TurnStateProvider,
@@ -19,14 +20,16 @@ export function Game() {
         <div className={styles.container}>
             <Map blur={!gameInProgress} />
             {gameInProgress && scale ? (
-                <TurnStateProvider
-                    initialState={initialState}
-                    initialPlayer={initialPlayer}
-                >
-                    <ActiveStateProvider>
-                        <TurnManager />
-                    </ActiveStateProvider>
-                </TurnStateProvider>
+                <ControlProvider initialPlayer={initialPlayer}>
+                    <TurnStateProvider
+                        initialState={initialState}
+                        initialPlayer={initialPlayer}
+                    >
+                        <ActiveStateProvider>
+                            <TurnManager />
+                        </ActiveStateProvider>
+                    </TurnStateProvider>
+                </ControlProvider>
             ) : (
                 <h1 className={styles.waiting}>Waiting for another player</h1>
             )}

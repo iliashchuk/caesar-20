@@ -25,6 +25,7 @@ function GameContextProvider({ children }) {
             });
 
             socket.on('init-player', ({ side, ...playerState }) => {
+                console.log(playerState);
                 setSide(side);
                 setInitialPlayer(playerState);
             });

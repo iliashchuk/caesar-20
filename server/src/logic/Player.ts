@@ -7,6 +7,7 @@ export class Player {
     remainingTokens: PlayerInfluence[];
     hand: PlayerInfluence[] = [];
     playersTurn: boolean;
+    controls: number = 0;
 
     constructor(side: Side) {
         this.side = side;
@@ -40,11 +41,16 @@ export class Player {
         this.playersTurn = false;
     }
 
+    establishControl() {
+        this.controls ++;
+    }
+
     get clientData(): PlayerClientData {
         return {
             playersTurn: this.playersTurn,
             side: this.side,
             tokensRemaining: this.remainingTokens.length,
+            controls: this.controls,
             hand: this.hand,
         };
     }
