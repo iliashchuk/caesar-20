@@ -4,8 +4,8 @@ import { GameContext } from './GameContext';
 
 const Control = createContext();
 
-function ControlProvider({ children, initialPlayer }) {
-    const { socket } = useContext(GameContext);
+function ControlProvider({ children }) {
+    const { socket, initialPlayer } = useContext(GameContext);
     const [controlNumber, setControlNumber] = useState(initialPlayer.controls);
     const [opponentControlNumber, setOpponentControlNumber] = useState({});
 

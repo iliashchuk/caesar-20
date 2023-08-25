@@ -32,12 +32,19 @@ export type Influence = {
     };
 };
 
-export type PlayerClientData = {
+export type ClientData = {
     side: Side;
-    hand: PlayerInfluence[];
     controls: number;
     tokensRemaining: number;
     playersTurn: boolean;
+};
+
+export type PlayerClientData = ClientData & {
+    hand: PlayerInfluence[];
+};
+
+export type OpponentsClientData = ClientData & {
+    tokensInHand: number;
 };
 
 export enum StateChangeType {

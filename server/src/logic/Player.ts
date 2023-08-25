@@ -1,5 +1,12 @@
 import { genericInfluenceTokens } from "../static/tokens.js";
-import { PlayerClientData, PlayerInfluence, Side, Token, TokenId } from "../types.js";
+import {
+    OpponentsClientData,
+    PlayerClientData,
+    PlayerInfluence,
+    Side,
+    Token,
+    TokenId,
+} from "../types.js";
 import { shuffle } from "../utils.js";
 
 export class Player {
@@ -24,7 +31,7 @@ export class Player {
         return {
             side: this.side,
             id: "control",
-        }
+        };
     }
 
     playFromHand(id: TokenId) {
@@ -42,7 +49,7 @@ export class Player {
     }
 
     establishControl() {
-        this.controls ++;
+        this.controls++;
     }
 
     get clientData(): PlayerClientData {
@@ -52,6 +59,16 @@ export class Player {
             tokensRemaining: this.remainingTokens.length,
             controls: this.controls,
             hand: this.hand,
+        };
+    }
+
+    get opponentClientData(): OpponentsClientData {
+        return {
+            playersTurn: this.playersTurn,
+            side: this.side,
+            tokensRemaining: this.remainingTokens.length,
+            controls: this.controls,
+            tokensInHand: this.hand.length,
         };
     }
 }

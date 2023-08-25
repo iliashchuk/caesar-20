@@ -4,16 +4,11 @@ import { GameContext } from './GameContext';
 
 const TurnState = createContext();
 
-function TurnStateProvider({ initialState, initialPlayer, children }) {
-    const [tokensRemaining, setTokensRemaining] = useState(
-        initialPlayer.tokensRemaining,
-    );
-    const [playerTokens, setPlayerTokens] = useState(initialPlayer.hand);
-    const [opponentTokenNumber, setOpponentTokenNumber] = useState(2);
+function TurnStateProvider({ children }) {
+    const { socket, initialPlayer, initialState } = useContext(GameContext);
+    const [playersTurn, setPlayersTurn] = useState(initialPlayer.playersTurn);
     const [establishedState, setEstablishedState] = useState(initialState);
     const [animatedState, setAnimatedState] = useState({});
-    const [playersTurn, setPlayersTurn] = useState(initialPlayer.playersTurn);
-    const { socket } = useContext(GameContext);
 
     function endTurn(location, token) {
         socket.emit('end-turn', {
@@ -34,9 +29,7 @@ function TurnStateProvider({ initialState, initialPlayer, children }) {
     useEffect(() => {
         socket.on('established', establishState);
 
-        socket.on('player', ({ hand, tokensRemaining, playersTurn }) => {
-            setPlayerTokens(hand);
-            setTokensRemaining(tokensRemaining);
+        socket.on('player', ({  playersTurn }) => {
             setPlayersTurn(playersTurn);
         });
     }, [socket]);
@@ -45,9 +38,6 @@ function TurnStateProvider({ initialState, initialPlayer, children }) {
         <TurnState.Provider
             value={{
                 playersTurn,
-                playerTokens,
-                tokensRemaining,
-                opponentTokenNumber,
                 updateAnimatedState,
                 endTurn,
                 establishedLocationState: {

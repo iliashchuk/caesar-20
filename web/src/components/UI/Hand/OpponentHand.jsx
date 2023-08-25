@@ -1,13 +1,13 @@
 import classnames from 'classnames';
 import { useContext } from 'react';
 
-import { GameContext, TurnState } from '../../../context';
+import { GameContext, Tokens } from '../../../context';
 import { getOpponentSide } from '../../../utils';
 import { Token } from '../../Token';
 import styles from './Hand.module.scss';
 
 export function OpponentHand({ isOpponentTokenMoving }) {
-    const { opponentTokenNumber } = useContext(TurnState);
+    const { opponentTokenNumber } = useContext(Tokens);
     const { side } = useContext(GameContext);
 
     const blankTokens = Array.from(

@@ -1,11 +1,13 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 
+import { Tokens } from './Tokens';
 import { TurnState } from './TurnState';
 
 export const ActiveState = createContext();
 
 export function ActiveStateProvider({ children }) {
-    const { playerTokens, endTurn } = useContext(TurnState);
+    const { endTurn } = useContext(TurnState);
+    const { playerTokens } = useContext(Tokens);
     const [activeLocation, setActiveLocation] = useState();
     const [activeToken, setActiveToken] = useState();
     const [tokensInHand, setTokensInHand] = useState(playerTokens);

@@ -5,6 +5,7 @@ import {
     ControlProvider,
     GameContext,
     SizingContext,
+    TokensProvider,
     TurnStateProvider,
 } from '../../context';
 import { Map } from '../Map';
@@ -13,22 +14,20 @@ import styles from './Game.module.scss';
 
 export function Game() {
     const { scale } = useContext(SizingContext);
-    const { gameInProgress, initialState, initialPlayer } =
-        useContext(GameContext);
+    const { gameInProgress } = useContext(GameContext);
 
     return (
         <div className={styles.container}>
             <Map blur={!gameInProgress} />
             {gameInProgress && scale ? (
-                <ControlProvider initialPlayer={initialPlayer}>
-                    <TurnStateProvider
-                        initialState={initialState}
-                        initialPlayer={initialPlayer}
-                    >
-                        <ActiveStateProvider>
-                            <TurnManager />
-                        </ActiveStateProvider>
-                    </TurnStateProvider>
+                <ControlProvider>
+                    <TokensProvider>
+                        <TurnStateProvider>
+                            <ActiveStateProvider>
+                                <TurnManager />
+                            </ActiveStateProvider>
+                        </TurnStateProvider>
+                    </TokensProvider>
                 </ControlProvider>
             ) : (
                 <h1 className={styles.waiting}>Waiting for another player</h1>

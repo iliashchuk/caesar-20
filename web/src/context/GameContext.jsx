@@ -8,8 +8,10 @@ const GameContext = createContext();
 function GameContextProvider({ children }) {
     const [socket, setSocket] = useState();
     const [side, setSide] = useState();
-    const [initialState, setInitialState] = useState();
-    const [initialPlayer, setInitialPlayer] = useState();
+    const [opponentSide, setOpponentSide] = useState();
+    const [initialState, setInitialState] = useState({});
+    const [initialPlayer, setInitialPlayer] = useState({});
+    const [initialOpponent, setInitialOpponent] = useState({});
     const { user } = useContext(User);
     const [gameInProgress, setGameInProgress] = useState(false);
 
@@ -25,9 +27,13 @@ function GameContextProvider({ children }) {
             });
 
             socket.on('init-player', ({ side, ...playerState }) => {
-                console.log(playerState);
                 setSide(side);
                 setInitialPlayer(playerState);
+            });
+
+            socket.on('init-opponent', ({ side, ...opponentState }) => {
+                setOpponentSide(side);
+                setInitialOpponent(opponentState);
             });
 
             socket.on('game-paused', () => {
@@ -42,11 +48,13 @@ function GameContextProvider({ children }) {
     return (
         <GameContext.Provider
             value={{
-                side,
                 socket,
                 gameInProgress,
+                side,
+                opponentSide,
                 initialState,
                 initialPlayer,
+                initialOpponent,
             }}
         >
             {children}

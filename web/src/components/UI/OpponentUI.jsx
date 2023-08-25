@@ -4,6 +4,7 @@ import { useContext } from 'react';
 import { SizingContext, TokenMovement } from '../../context';
 import { MovingToken } from '../Token';
 import { OpponentHand } from './Hand';
+import { TokenCounter } from './TokenCounter';
 import styles from './UI.module.scss';
 
 export function OpponentUI() {
@@ -24,9 +25,11 @@ export function OpponentUI() {
                 className={styles.ui}
                 style={{
                     height: locationSize + 24,
-                    top: -(locationSize + 24) / 2,
+                    // top: -(locationSize + 24) / 2,
+                    top: 0,
                 }}
             >
+                <TokenCounter opponent />
                 <OpponentHand isOpponentTokenMoving={isOpponentTokenMoving} />
             </div>
             <AnimatePresence>
