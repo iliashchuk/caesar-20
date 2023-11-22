@@ -1,7 +1,7 @@
 import {
     borderProvincesDictionary,
     provinceBordersDictionary,
-} from "../static/provinces.js";
+} from '../static/provinces.js';
 import {
     Bonus,
     BonusToken,
@@ -9,8 +9,8 @@ import {
     LocationId,
     PlayerInfluence,
     Side,
-} from "../types.js";
-import { makeBonusToken } from "../utils.js";
+} from '../types.js';
+import { makeBonusToken } from '../utils.js';
 
 export class Province {
     id: LocationId;
@@ -43,19 +43,19 @@ export class Province {
             return [
                 ...acc,
                 ...borderProvincesDictionary[border].filter(
-                    (province) => province !== this.id
+                    (province) => province !== this.id,
                 ),
             ];
         }, []);
     }
 
-    tryCloseBorder(border: LocationId, token: PlayerInfluence) {
-        if (this.borders.includes(border)) {
-            const isProvinceTop = border.split("-")[0] === this.id;
+    tryCloseBorder(borderId: LocationId, token: PlayerInfluence) {
+        if (this.borders.includes(borderId)) {
+            const isProvinceTop = borderId.split('-')[0] === this.id;
             const useTopPower = isProvinceTop ? !token.turned : token.turned;
             this.power[token.side] +=
-                token.power[useTopPower ? "top" : "bottom"];
-            this.closedBorders.push(border);
+                token.power[useTopPower ? 'top' : 'bottom'];
+            this.closedBorders.push(borderId);
 
             if (this.borders.length === this.closedBorders.length) {
                 this.closed = true;
