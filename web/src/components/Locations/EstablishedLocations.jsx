@@ -20,7 +20,7 @@ export function EstablishedLocations() {
                 key={locationId}
                 location={location}
             >
-                <Token rotation={tokenRotation} token={token} />
+                {token && <Token rotation={tokenRotation} token={token} />}
             </Location>
         );
     }

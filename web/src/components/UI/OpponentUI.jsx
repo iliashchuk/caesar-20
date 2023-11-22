@@ -9,15 +9,22 @@ import styles from './UI.module.scss';
 
 export function OpponentUI() {
     const { locationSize } = useContext(SizingContext);
-    const { activeMovement } = useContext(TokenMovement);
-
-    const opponentMovingTokenLocation = {
-        x: 0.5,
-        y: 0,
-    };
+    const {
+        activeMovement,
+        finishMovement,
+        opponentMovingTokenLocation,
+        updateAnimatedState,
+    } = useContext(TokenMovement);
 
     const isOpponentTokenMoving =
         activeMovement && activeMovement.origin === 'opponent';
+
+    function handleFinishMovement() {
+        updateAnimatedState({
+            [activeMovement.destination.id]: activeMovement.token,
+        });
+        finishMovement();
+    }
 
     return (
         <>
@@ -34,7 +41,11 @@ export function OpponentUI() {
             </div>
             <AnimatePresence>
                 {isOpponentTokenMoving && (
-                    <MovingToken initial={opponentMovingTokenLocation} />
+                    <MovingToken
+                        {...activeMovement}
+                        origin={opponentMovingTokenLocation}
+                        finishMovement={handleFinishMovement}
+                    />
                 )}
             </AnimatePresence>
         </>

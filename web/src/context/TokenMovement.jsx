@@ -6,9 +6,20 @@ import { TurnState } from './TurnState';
 
 const TokenMovement = createContext();
 
+const opponentMovingTokenLocation = {
+    x: 0.5,
+    y: -0.2,
+};
+
+const playerMovingTokenLocation = {
+    x: 0.5,
+    y: 1.2,
+};
+
 function TokenMovementProvider({ children }) {
     const { socket } = useContext(GameContext);
     const { updateAnimatedState } = useContext(TurnState);
+    const { side: playerSide } = useContext(GameContext);
     const [activeMovement, setActiveMovement] = useState();
     const [pendingStateChanges, setPendingStateChanges] = useState([]);
 
@@ -27,7 +38,7 @@ function TokenMovementProvider({ children }) {
             }
 
             if (type === 'bonus') {
-                console.log('bonus', token);
+                moveBonusToken(token, locations[location], side === playerSide);
             }
 
             if (type === 'control') {
@@ -41,7 +52,17 @@ function TokenMovementProvider({ children }) {
             console.log('No pending animation changes!');
             socket.emit('state-change-animated');
         }
-    }, [socket, pendingStateChanges, activeMovement]);
+    }, [socket, pendingStateChanges, activeMovement, playerSide]);
+
+    function moveBonusToken(token, location, player = true) {
+        setActiveMovement({
+            origin: location,
+            token,
+            destination: player
+                ? playerMovingTokenLocation
+                : opponentMovingTokenLocation,
+        });
+    }
 
     function moveOpponentToken(token, destination) {
         setActiveMovement({
@@ -50,6 +71,7 @@ function TokenMovementProvider({ children }) {
             destination,
         });
     }
+
     function moveControlToken(side, destination) {
         setActiveMovement({
             origin: 'control',
@@ -59,9 +81,6 @@ function TokenMovementProvider({ children }) {
     }
 
     function finishMovement() {
-        updateAnimatedState({
-            [activeMovement.destination.id]: activeMovement.token,
-        });
         setActiveMovement();
     }
 
@@ -71,7 +90,10 @@ function TokenMovementProvider({ children }) {
                 activeMovement,
                 moveControlToken,
                 moveOpponentToken,
+                moveBonusToken,
                 finishMovement,
+                updateAnimatedState,
+                opponentMovingTokenLocation,
             }}
         >
             {children}

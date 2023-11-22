@@ -1,19 +1,19 @@
 import { motion } from 'framer-motion';
 import { useContext, useLayoutEffect, useMemo, useState } from 'react';
 
-import { SizingContext, TokenMovement } from '../../context';
+import { SizingContext } from '../../context';
 import { Token } from './Token';
 import styles from './Token.module.scss';
 
-export function MovingToken({ initial, finishMovement }) {
+export function MovingToken({ origin, destination, token, finishMovement }) {
     const { getScaledPosition, getPositionOffsetByTokenRadius } =
         useContext(SizingContext);
-    const { activeMovement, finishMovement: defaultFinishMovement } =
-        useContext(TokenMovement);
     const [movement, setMovement] = useState();
 
+    // this is needed to keep the animation data
+    // when the MovingToken is removed from the DOM to perform exit animation
     useLayoutEffect(() => {
-        setMovement(activeMovement);
+        setMovement({ origin, destination, token });
     }, []);
 
     const rotate = useMemo(() => {
@@ -43,19 +43,19 @@ export function MovingToken({ initial, finishMovement }) {
                 className={styles.tokenMovement}
                 initial={{
                     ...getPositionOffsetByTokenRadius(
-                        getScaledPosition(initial),
+                        getScaledPosition(origin),
                     ),
                 }}
                 onAnimationComplete={({ exitTransition }) => {
                     if (!exitTransition) {
-                        finishMovement
-                            ? finishMovement()
-                            : defaultFinishMovement();
+                        finishMovement();
                     }
                 }}
                 animate={{
                     ...getPositionOffsetByTokenRadius(
-                        getScaledPosition(movement.destination),
+                        getScaledPosition(
+                            destination ? destination : movement.destination,
+                        ),
                     ),
                     boxShadow: '10px 12px #000000aa',
                     scale: 1.5,

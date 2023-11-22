@@ -2,11 +2,18 @@ import classnames from 'classnames';
 import { forwardRef, useContext } from 'react';
 
 import { SizingContext, TokenMovement } from '../../context';
+import { MovingToken } from '../Token';
 import styles from './Location.module.scss';
 
 function LocationWithoutRef({ location, classes, children }, ref) {
     const { locationSize } = useContext(SizingContext);
-    const { moveControlToken, moveOpponentToken } = useContext(TokenMovement);
+    const {
+        moveControlToken,
+        moveOpponentToken,
+        activeMovement,
+        finishMovement,
+        updateAnimatedState,
+    } = useContext(TokenMovement);
 
     const style = {
         width: locationSize,
@@ -15,7 +22,24 @@ function LocationWithoutRef({ location, classes, children }, ref) {
         top: `calc(${location.y * 100}% - ${locationSize / 2}px)`,
     };
 
-    return (
+    const isTokenMovingOut =
+        activeMovement && activeMovement.origin.id === location.id;
+
+    const handleFinishMovement = () => {
+        updateAnimatedState({ [location.id]: undefined });
+        finishMovement();
+    };
+
+    const tokenMovingOut = isTokenMovingOut && (
+        <MovingToken
+            {...activeMovement}
+            finishMovement={handleFinishMovement}
+        />
+    );
+
+    return tokenMovingOut ? (
+        tokenMovingOut
+    ) : (
         <div
             // this is debug
             onClick={() =>
