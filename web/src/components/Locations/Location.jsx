@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import { forwardRef, useContext } from 'react';
 
 import { SizingContext, TokenMovement } from '../../context';
-import { MovingToken } from '../Token';
+import { AnimatedToken } from '../Token';
 import styles from './Location.module.scss';
 
 function LocationWithoutRef({ location, classes, children }, ref) {
@@ -22,24 +22,22 @@ function LocationWithoutRef({ location, classes, children }, ref) {
         top: `calc(${location.y * 100}% - ${locationSize / 2}px)`,
     };
 
-    const isTokenMovingOut =
-        activeMovement && activeMovement.origin.id === location.id;
-
-    const handleFinishMovement = () => {
+    const handleFinishMovingOut = () => {
         updateAnimatedState({ [location.id]: undefined });
         finishMovement();
     };
 
+    const isTokenMovingOut =
+        activeMovement && activeMovement.origin.id === location.id;
+
     const tokenMovingOut = isTokenMovingOut && (
-        <MovingToken
+        <AnimatedToken
             {...activeMovement}
-            finishMovement={handleFinishMovement}
+            finishMovement={handleFinishMovingOut}
         />
     );
 
-    return tokenMovingOut ? (
-        tokenMovingOut
-    ) : (
+    return tokenMovingOut ||
         <div
             // this is debug
             onClick={() =>
@@ -57,7 +55,6 @@ function LocationWithoutRef({ location, classes, children }, ref) {
         >
             {children}
         </div>
-    );
 }
 
 export const Location = forwardRef(LocationWithoutRef);

@@ -1,0 +1,1 @@
+export const WINNING_CONTROL_NUMBER = 22;

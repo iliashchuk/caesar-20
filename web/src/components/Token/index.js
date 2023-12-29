@@ -1,3 +1,3 @@
 export * from './Token';
 export * from './PlayerToken';
-export * from './MovingToken';
+export * from './AnimatedToken';

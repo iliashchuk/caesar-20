@@ -2,7 +2,7 @@ import { AnimatePresence } from 'framer-motion';
 import { useContext } from 'react';
 
 import { SizingContext, TokenMovement } from '../../context';
-import { MovingToken } from '../Token';
+import { AnimatedToken } from '../Token';
 import { OpponentHand } from './Hand';
 import { TokenCounter } from './TokenCounter';
 import styles from './UI.module.scss';
@@ -41,7 +41,7 @@ export function OpponentUI() {
             </div>
             <AnimatePresence>
                 {isOpponentTokenMoving && (
-                    <MovingToken
+                    <AnimatedToken
                         {...activeMovement}
                         origin={opponentMovingTokenLocation}
                         finishMovement={handleFinishMovement}

@@ -5,13 +5,13 @@ import { SizingContext } from '../../context';
 import { Token } from './Token';
 import styles from './Token.module.scss';
 
-export function MovingToken({ origin, destination, token, finishMovement }) {
+export function AnimatedToken({ origin, destination, token, finishMovement }) {
     const { getScaledPosition, getPositionOffsetByTokenRadius } =
         useContext(SizingContext);
     const [movement, setMovement] = useState();
 
     // this is needed to keep the animation data
-    // when the MovingToken is removed from the DOM to perform exit animation
+    // when the AnimatedToken is removed from the DOM to perform exit animation
     useLayoutEffect(() => {
         setMovement({ origin, destination, token });
     }, []);

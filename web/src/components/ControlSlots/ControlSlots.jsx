@@ -3,15 +3,14 @@ import { useContext, useEffect, useState } from 'react';
 
 import { TokenMovement } from '../../context';
 import { Location } from '../Locations';
-import { MovingToken, Token } from '../Token';
-
-const WinningControlNumber = 12;
+import { AnimatedToken, Token } from '../Token';
+import { WINNING_CONTROL_NUMBER } from '../../../../server/src/constants'
 
 export function ControlSlots({ side, slots, controlNumber }) {
     const { activeMovement, finishMovement, updateAnimatedState } =
         useContext(TokenMovement);
     const [actualSlots, setActualSlots] = useState(
-        slots.slice(0, WinningControlNumber - controlNumber),
+        slots.slice(0, WINNING_CONTROL_NUMBER - controlNumber),
     );
     const [movingTokenIndex, setMovingTokenIndex] = useState();
 
@@ -28,7 +27,7 @@ export function ControlSlots({ side, slots, controlNumber }) {
     useEffect(() => {
         if (!activeMovement) {
             setActualSlots(
-                slots.slice(0, WinningControlNumber - controlNumber),
+                slots.slice(0, WINNING_CONTROL_NUMBER - controlNumber),
             );
         }
     }, [slots, controlNumber, activeMovement]);
@@ -46,7 +45,7 @@ export function ControlSlots({ side, slots, controlNumber }) {
         <AnimatePresence>
             {actualSlots.map((location, index) =>
                 activeMovement && index === movingTokenIndex ? (
-                    <MovingToken
+                    <AnimatedToken
                         key={location.id}
                         {...activeMovement}
                         origin={location}

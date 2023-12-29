@@ -6,7 +6,7 @@ import { createCircleCollisionDetectionForRadius } from '../../static/circleColl
 import { Token } from '../Token/Token';
 
 export function TokenDragContext({ children }) {
-    const [movingToken, setMovingToken] = useState(false);
+    const [movingToken, setMovingToken] = useState(null);
     const { locationRadius } = useContext(SizingContext);
     const { updateActiveState } = useContext(ActiveState);
 
