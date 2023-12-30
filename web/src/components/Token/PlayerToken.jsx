@@ -5,6 +5,8 @@ import { ActiveState } from '../../context';
 import { Token } from './Token';
 import styles from './Token.module.scss';
 
+// a token you can start a drag with
+// but no a token displayed during dragging - that's in TokenDragContext
 export function PlayerToken({ token, rotation }) {
     const { turnActiveToken } = useContext(ActiveState);
     const { attributes, listeners, setNodeRef, isDragging } = useDraggable({

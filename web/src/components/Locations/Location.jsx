@@ -11,8 +11,6 @@ function LocationWithoutRef({ location, classes, children }, ref) {
         moveControlToken,
         moveOpponentToken,
         activeMovement,
-        finishMovement,
-        updateAnimatedState,
     } = useContext(TokenMovement);
 
     const style = {
@@ -22,10 +20,6 @@ function LocationWithoutRef({ location, classes, children }, ref) {
         top: `calc(${location.y * 100}% - ${locationSize / 2}px)`,
     };
 
-    const handleFinishMovingOut = () => {
-        updateAnimatedState({ [location.id]: undefined });
-        finishMovement();
-    };
 
     const isTokenMovingOut =
         activeMovement && activeMovement.origin.id === location.id;
@@ -33,7 +27,6 @@ function LocationWithoutRef({ location, classes, children }, ref) {
     const tokenMovingOut = isTokenMovingOut && (
         <AnimatedToken
             {...activeMovement}
-            finishMovement={handleFinishMovingOut}
         />
     );
 

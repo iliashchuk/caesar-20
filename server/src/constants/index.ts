@@ -1,1 +1,1 @@
-export const WINNING_CONTROL_NUMBER = 22;
+export const WINNING_CONTROL_NUMBER = 12;

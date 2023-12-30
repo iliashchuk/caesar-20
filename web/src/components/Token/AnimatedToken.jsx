@@ -5,7 +5,7 @@ import { SizingContext } from '../../context';
 import { Token } from './Token';
 import styles from './Token.module.scss';
 
-export function AnimatedToken({ origin, destination, token, finishMovement }) {
+export function AnimatedToken({ origin, destination, token, onFinish }) {
     const { getScaledPosition, getPositionOffsetByTokenRadius } =
         useContext(SizingContext);
     const [movement, setMovement] = useState();
@@ -48,7 +48,7 @@ export function AnimatedToken({ origin, destination, token, finishMovement }) {
                 }}
                 onAnimationComplete={({ exitTransition }) => {
                     if (!exitTransition) {
-                        finishMovement();
+                        onFinish();
                     }
                 }}
                 animate={{

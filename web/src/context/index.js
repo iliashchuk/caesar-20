@@ -5,3 +5,4 @@ export * from './ActiveState';
 export * from './TokenMovement';
 export * from './Control';
 export * from './Tokens';
+export * from './useStateChangesListener';

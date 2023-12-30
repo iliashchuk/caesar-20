@@ -7,8 +7,7 @@ import { AnimatedToken, Token } from '../Token';
 import { WINNING_CONTROL_NUMBER } from '../../../../server/src/constants'
 
 export function ControlSlots({ side, slots, controlNumber }) {
-    const { activeMovement, finishMovement, updateAnimatedState } =
-        useContext(TokenMovement);
+    const { activeMovement } = useContext(TokenMovement);
     const [actualSlots, setActualSlots] = useState(
         slots.slice(0, WINNING_CONTROL_NUMBER - controlNumber),
     );
@@ -33,10 +32,7 @@ export function ControlSlots({ side, slots, controlNumber }) {
     }, [slots, controlNumber, activeMovement]);
 
     function finishControlMovement() {
-        updateAnimatedState({
-            [activeMovement.destination.id]: activeMovement.token,
-        });
-        finishMovement();
+        activeMovement.onFinish();
         setActualSlots(actualSlots.slice(0, actualSlots.length - 1));
         setMovingTokenIndex();
     }
@@ -49,7 +45,7 @@ export function ControlSlots({ side, slots, controlNumber }) {
                         key={location.id}
                         {...activeMovement}
                         origin={location}
-                        finishMovement={finishControlMovement}
+                        onFinish={finishControlMovement}
                     />
                 ) : (
                     <Location key={location.id} location={location}>

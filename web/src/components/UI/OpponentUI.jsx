@@ -11,20 +11,11 @@ export function OpponentUI() {
     const { locationSize } = useContext(SizingContext);
     const {
         activeMovement,
-        finishMovement,
         opponentMovingTokenLocation,
-        updateAnimatedState,
     } = useContext(TokenMovement);
 
     const isOpponentTokenMoving =
         activeMovement && activeMovement.origin === 'opponent';
-
-    function handleFinishMovement() {
-        updateAnimatedState({
-            [activeMovement.destination.id]: activeMovement.token,
-        });
-        finishMovement();
-    }
 
     return (
         <>
@@ -44,7 +35,6 @@ export function OpponentUI() {
                     <AnimatedToken
                         {...activeMovement}
                         origin={opponentMovingTokenLocation}
-                        finishMovement={handleFinishMovement}
                     />
                 )}
             </AnimatePresence>

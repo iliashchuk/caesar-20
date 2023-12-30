@@ -1,7 +1,5 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+import { createContext, useContext, useState } from 'react';
 
-import locations from '../static/locations.json';
-import { GameContext } from './GameContext';
 import { TurnState } from './TurnState';
 
 const TokenMovement = createContext();
@@ -17,71 +15,69 @@ const playerMovingTokenLocation = {
 };
 
 function TokenMovementProvider({ children }) {
-    const { socket } = useContext(GameContext);
-    const { updateAnimatedState } = useContext(TurnState);
-    const { side: playerSide } = useContext(GameContext);
     const [activeMovement, setActiveMovement] = useState();
-    const [pendingStateChanges, setPendingStateChanges] = useState([]);
+    const { updateAnimatedState } = useContext(TurnState);
 
-    useEffect(() => {
-        socket.on('state-changes', (stateChanges) => {
-            setPendingStateChanges([...pendingStateChanges, ...stateChanges]);
-        });
-    }, [socket]);
-
-    useEffect(() => {
-        if (pendingStateChanges.length && !activeMovement) {
-            const { type, location, token, side } = pendingStateChanges[0];
-
-            if (type === 'opponent') {
-                moveOpponentToken(token, locations[location]);
-            }
-
-            if (type === 'bonus') {
-                moveBonusToken(token, locations[location], side === playerSide);
-            }
-
-            if (type === 'control') {
-                moveControlToken(side, locations[location]);
-            }
-
-            setPendingStateChanges(pendingStateChanges.slice(1));
-        }
-
-        if (!pendingStateChanges.length && !activeMovement) {
-            console.log('No pending animation changes!');
-            socket.emit('state-change-animated');
-        }
-    }, [socket, pendingStateChanges, activeMovement, playerSide]);
-
-    function moveBonusToken(token, location, player = true) {
-        setActiveMovement({
-            origin: location,
-            token,
-            destination: player
-                ? playerMovingTokenLocation
-                : opponentMovingTokenLocation,
-        });
+    function finishMovement() {
+        setActiveMovement();
     }
 
     function moveOpponentToken(token, destination) {
+        function onFinish() {
+            updateAnimatedState({
+                [destination.id]: token,
+            });
+            finishMovement();
+        }
+
         setActiveMovement({
-            origin: 'opponent',
             token,
+            origin: 'opponent',
             destination,
+            onFinish,
+        });
+    }
+
+    function moveBonusToken(token, location, player = true) {
+        function onFinish () {
+            updateAnimatedState({ [location.id]: undefined });
+            finishMovement();
+        }
+
+        setActiveMovement({
+            token,
+            origin: location,
+            destination: player
+                ? playerMovingTokenLocation
+                : opponentMovingTokenLocation,
+            onFinish,
         });
     }
 
     function moveControlToken(side, destination) {
+        const controlToken = { id: 'control', side };
+
+        function onFinish () {
+            updateAnimatedState({
+                [destination.id]: controlToken,
+            });
+            finishMovement();
+        }
+
         setActiveMovement({
+            token: controlToken,
             origin: 'control',
-            token: { id: 'control', side },
             destination,
+            onFinish,
         });
     }
 
-    function finishMovement() {
-        setActiveMovement();
+    function movePlayerToken(token, origin, destination) {
+        setActiveMovement({
+            token,
+            origin,
+            destination,
+        });
     }
 
     return (
@@ -92,7 +88,7 @@ function TokenMovementProvider({ children }) {
                 moveOpponentToken,
                 moveBonusToken,
                 finishMovement,
-                updateAnimatedState,
+                movePlayerToken,
                 opponentMovingTokenLocation,
             }}
         >

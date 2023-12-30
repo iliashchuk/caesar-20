@@ -49,6 +49,7 @@ export function ActiveStateProvider({ children }) {
                 activeLocation,
                 activeToken,
                 endTurnActivity,
+                playerTokens,
                 turnActiveToken,
                 updateActiveState,
             }}

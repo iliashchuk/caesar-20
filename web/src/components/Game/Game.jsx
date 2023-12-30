@@ -7,6 +7,7 @@ import {
     SizingContext,
     TokensProvider,
     TurnStateProvider,
+    TokenMovementProvider,
 } from '../../context';
 import { Map } from '../Map';
 import { TurnManager } from '../TurnManager';
@@ -24,7 +25,9 @@ export function Game() {
                     <TokensProvider>
                         <TurnStateProvider>
                             <ActiveStateProvider>
-                                <TurnManager />
+                                <TokenMovementProvider>
+                                    <TurnManager />
+                                </TokenMovementProvider>
                             </ActiveStateProvider>
                         </TurnStateProvider>
                     </TokensProvider>
