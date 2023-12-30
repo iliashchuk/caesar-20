@@ -10,7 +10,7 @@ import {
     TurnStateProvider,
 } from '../../context';
 import { Map } from '../Map';
-import { TurnManager } from '../TurnManager';
+import { TokenManager } from '../TokenManager';
 import styles from './Game.module.scss';
 
 export function Game() {
@@ -26,7 +26,7 @@ export function Game() {
                         <TurnStateProvider>
                             <ActiveStateProvider>
                                 <TokenMovementProvider>
-                                    <TurnManager />
+                                    <TokenManager />
                                 </TokenMovementProvider>
                             </ActiveStateProvider>
                         </TurnStateProvider>

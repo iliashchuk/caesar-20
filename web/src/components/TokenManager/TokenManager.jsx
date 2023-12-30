@@ -1,10 +1,11 @@
-import { useStateChangesListener } from '../../context';
+import { useStateChangesListener } from '@context';
+
 import { OpponentControlSlots, PlayerControlSlots } from '../ControlSlots';
 import { AvailableLocations, EstablishedLocations } from '../Locations';
-import { TokenDragContext } from '../TokenDragContext';
+import { TokenDragContext } from './TokenDragContext';
 import { OpponentUI, PlayerUI } from '../UI';
 
-export function TurnManager() {
+export function TokenManager() {
     useStateChangesListener();
 
     return (

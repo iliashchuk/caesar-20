@@ -1,9 +1,9 @@
 import { DndContext, DragOverlay, pointerWithin } from '@dnd-kit/core';
 import { useContext, useMemo, useState } from 'react';
 
-import { ActiveState, SizingContext } from '../../context';
-import { createCircleCollisionDetectionForRadius } from '../../static/circleCollision';
-import { Token } from '../Token/Token';
+import { ActiveState, SizingContext } from '@context';
+import { Token } from '@components/Token';
+import { createCircleCollisionDetectionForRadius } from '@static/circleCollision';
 
 export function TokenDragContext({ children }) {
     const [movingToken, setMovingToken] = useState(null);
