@@ -5,9 +5,9 @@ import {
     ControlProvider,
     GameContext,
     SizingContext,
+    TokenMovementProvider,
     TokensProvider,
     TurnStateProvider,
-    TokenMovementProvider,
 } from '../../context';
 import { Map } from '../Map';
 import { TurnManager } from '../TurnManager';

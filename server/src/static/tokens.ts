@@ -1,8 +1,8 @@
-import { Influence, InfluenceType } from "../types.js";
+import { Influence, InfluenceType } from '../types.js';
 
 export const genericInfluenceTokens: Influence[] = [
     {
-        id: "ship-0-6",
+        id: 'ship-0-6',
         type: InfluenceType.SHIP,
         power: {
             top: 0,
@@ -10,7 +10,7 @@ export const genericInfluenceTokens: Influence[] = [
         },
     },
     {
-        id: "ship-1-5",
+        id: 'ship-1-5',
         type: InfluenceType.SHIP,
         power: {
             top: 1,
@@ -18,7 +18,7 @@ export const genericInfluenceTokens: Influence[] = [
         },
     },
     {
-        id: "ship-2-4",
+        id: 'ship-2-4',
         type: InfluenceType.SHIP,
         power: {
             top: 2,
@@ -26,7 +26,7 @@ export const genericInfluenceTokens: Influence[] = [
         },
     },
     {
-        id: "ship-3-3",
+        id: 'ship-3-3',
         type: InfluenceType.SHIP,
         power: {
             top: 3,
@@ -34,7 +34,7 @@ export const genericInfluenceTokens: Influence[] = [
         },
     },
     {
-        id: "sword-0-6",
+        id: 'sword-0-6',
         type: InfluenceType.SWORD,
         power: {
             top: 0,
@@ -42,7 +42,7 @@ export const genericInfluenceTokens: Influence[] = [
         },
     },
     {
-        id: "sword-1-5",
+        id: 'sword-1-5',
         type: InfluenceType.SWORD,
         power: {
             top: 1,
@@ -50,7 +50,7 @@ export const genericInfluenceTokens: Influence[] = [
         },
     },
     {
-        id: "sword-2-4",
+        id: 'sword-2-4',
         type: InfluenceType.SWORD,
         power: {
             top: 2,
@@ -58,7 +58,7 @@ export const genericInfluenceTokens: Influence[] = [
         },
     },
     {
-        id: "sword-3-3",
+        id: 'sword-3-3',
         type: InfluenceType.SWORD,
         power: {
             top: 3,
@@ -66,7 +66,7 @@ export const genericInfluenceTokens: Influence[] = [
         },
     },
     {
-        id: "shield-0-6",
+        id: 'shield-0-6',
         type: InfluenceType.SHIELD,
         power: {
             top: 0,
@@ -74,7 +74,7 @@ export const genericInfluenceTokens: Influence[] = [
         },
     },
     {
-        id: "shield-1-5",
+        id: 'shield-1-5',
         type: InfluenceType.SHIELD,
         power: {
             top: 1,
@@ -82,7 +82,7 @@ export const genericInfluenceTokens: Influence[] = [
         },
     },
     {
-        id: "shield-2-4",
+        id: 'shield-2-4',
         type: InfluenceType.SHIELD,
         power: {
             top: 2,
@@ -90,7 +90,7 @@ export const genericInfluenceTokens: Influence[] = [
         },
     },
     {
-        id: "shield-3-3",
+        id: 'shield-3-3',
         type: InfluenceType.SHIELD,
         power: {
             top: 3,
@@ -98,7 +98,7 @@ export const genericInfluenceTokens: Influence[] = [
         },
     },
     {
-        id: "wild-1-3",
+        id: 'wild-1-3',
         type: InfluenceType.WILD,
         power: {
             top: 1,
@@ -106,7 +106,7 @@ export const genericInfluenceTokens: Influence[] = [
         },
     },
     {
-        id: "wild-0-4",
+        id: 'wild-0-4',
         type: InfluenceType.WILD,
         power: {
             top: 0,
@@ -114,7 +114,7 @@ export const genericInfluenceTokens: Influence[] = [
         },
     },
     {
-        id: "wild-2-2-a",
+        id: 'wild-2-2-a',
         type: InfluenceType.WILD,
         power: {
             top: 2,
@@ -122,7 +122,7 @@ export const genericInfluenceTokens: Influence[] = [
         },
     },
     {
-        id: "wild-2-2-b",
+        id: 'wild-2-2-b',
         type: InfluenceType.WILD,
         power: {
             top: 2,
@@ -132,8 +132,8 @@ export const genericInfluenceTokens: Influence[] = [
 ];
 
 export const bonusTokens = [
-    { side: "bonus", id: "senate" },
-    { side: "bonus", id: "strength" },
-    { side: "bonus", id: "wealth" },
-    { side: "bonus", id: "tactics" },
+    { side: 'bonus', id: 'senate' },
+    { side: 'bonus', id: 'strength' },
+    { side: 'bonus', id: 'wealth' },
+    { side: 'bonus', id: 'tactics' },
 ];

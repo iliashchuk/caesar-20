@@ -5,22 +5,22 @@ export type User = string;
 export type TokenId = string;
 
 export enum Side {
-    POMPEY = "pompey",
-    CAESAR = "caesar",
+    POMPEY = 'pompey',
+    CAESAR = 'caesar',
 }
 
 export enum InfluenceType {
-    SHIP = "ship",
-    SWORD = "sword",
-    SHIELD = "shield",
-    WILD = "wild",
+    SHIP = 'ship',
+    SWORD = 'sword',
+    SHIELD = 'shield',
+    WILD = 'wild',
 }
 
 export enum Bonus {
-    WEALTH = "wealth",
-    STRENGTH = "strength",
-    TACTICS = "tactics",
-    SENATE = "senate",
+    WEALTH = 'wealth',
+    STRENGTH = 'strength',
+    TACTICS = 'tactics',
+    SENATE = 'senate',
 }
 
 export type Influence = {
@@ -48,8 +48,8 @@ export type OpponentsClientData = ClientData & {
 };
 
 export enum StateChangeType {
-    BONUS = "bonus",
-    CONTROL = "control",
+    BONUS = 'bonus',
+    CONTROL = 'control',
 }
 
 export type StateChange = {
@@ -63,11 +63,11 @@ export type PlayerInfluence = Influence & { side: Side; turned?: boolean };
 
 export type BonusToken = {
     id: Bonus;
-    side: "bonus";
+    side: 'bonus';
 };
 
 export type ControlToken = {
-    id: "control";
+    id: 'control';
     side: Side;
 };
 

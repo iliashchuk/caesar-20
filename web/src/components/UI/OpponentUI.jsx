@@ -9,10 +9,8 @@ import styles from './UI.module.scss';
 
 export function OpponentUI() {
     const { locationSize } = useContext(SizingContext);
-    const {
-        activeMovement,
-        opponentMovingTokenLocation,
-    } = useContext(TokenMovement);
+    const { activeMovement, opponentMovingTokenLocation } =
+        useContext(TokenMovement);
 
     const isOpponentTokenMoving =
         activeMovement && activeMovement.origin === 'opponent';

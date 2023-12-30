@@ -6,7 +6,12 @@ import { TokenMovement } from './TokenMovement';
 
 function useStateChangesListener() {
     const { socket, side: playerSide } = useContext(GameContext);
-    const { moveOpponentToken, moveBonusToken, moveControlToken, activeMovement } = useContext(TokenMovement);
+    const {
+        moveOpponentToken,
+        moveBonusToken,
+        moveControlToken,
+        activeMovement,
+    } = useContext(TokenMovement);
     const [pendingStateChanges, setPendingStateChanges] = useState([]);
 
     useEffect(() => {
@@ -39,7 +44,6 @@ function useStateChangesListener() {
             socket.emit('state-change-animated');
         }
     }, [socket, pendingStateChanges, activeMovement, playerSide]);
-
 
     return null;
 }

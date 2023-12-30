@@ -1,4 +1,4 @@
-import { genericInfluenceTokens } from "../static/tokens.js";
+import { genericInfluenceTokens } from '../static/tokens.js';
 import {
     OpponentsClientData,
     PlayerClientData,
@@ -6,8 +6,8 @@ import {
     Side,
     Token,
     TokenId,
-} from "../types.js";
-import { shuffle } from "../utils.js";
+} from '../types.js';
+import { shuffle } from '../utils.js';
 
 export class Player {
     side: Side;
@@ -30,7 +30,7 @@ export class Player {
     get controlToken(): Token {
         return {
             side: this.side,
-            id: "control",
+            id: 'control',
         };
     }
 

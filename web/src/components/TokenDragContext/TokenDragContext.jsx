@@ -22,10 +22,10 @@ export function TokenDragContext({ children }) {
         if (!event.over?.id) {
             return;
         }
-    
+
         const location = event.over.data.current;
         const token = event.active.data.current;
-        
+
         // movePlayerToken(token, {x: event.activatorEvent.x, y: event.activatorEvent.y}, location)
         updateActiveState(location, token);
     }

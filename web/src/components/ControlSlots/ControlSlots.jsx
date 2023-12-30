@@ -1,10 +1,10 @@
 import { AnimatePresence } from 'framer-motion';
 import { useContext, useEffect, useState } from 'react';
 
+import { WINNING_CONTROL_NUMBER } from '../../../../server/src/constants';
 import { TokenMovement } from '../../context';
 import { Location } from '../Locations';
 import { AnimatedToken, Token } from '../Token';
-import { WINNING_CONTROL_NUMBER } from '../../../../server/src/constants'
 
 export function ControlSlots({ side, slots, controlNumber }) {
     const { activeMovement } = useContext(TokenMovement);

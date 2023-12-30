@@ -1,12 +1,19 @@
-import { provincesBarringItalia } from "./static/provinces.js";
-import { Bonus, BonusToken, ControlToken, LocationId, Side, User } from "./types.js";
+import { provincesBarringItalia } from './static/provinces.js';
+import {
+    Bonus,
+    BonusToken,
+    ControlToken,
+    LocationId,
+    Side,
+    User,
+} from './types.js';
 
 export function shortenId(id: string): User {
     return id.slice(0, 8);
 }
 
 export function logEmit(msg) {
-    console.info("EMITTING: ", msg);
+    console.info('EMITTING: ', msg);
 }
 
 export function shuffle<T>(array: T[]): T[] {
@@ -48,13 +55,13 @@ export function getRandomBonusesForProvinces(): Record<LocationId, Bonus> {
         return { ...acc, [province]: bonus };
     }, {});
 
-    bonusesForProvincesBarringItalia["italia"] = Bonus.SENATE;
+    bonusesForProvincesBarringItalia['italia'] = Bonus.SENATE;
 
     return bonusesForProvincesBarringItalia;
 }
 export function makeBonusToken(bonus: Bonus): BonusToken {
-    return { id: bonus, side: "bonus" };
+    return { id: bonus, side: 'bonus' };
 }
 export function makeControlToken(side: Side): ControlToken {
-    return { id: "control", side };
+    return { id: 'control', side };
 }

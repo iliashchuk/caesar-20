@@ -29,7 +29,7 @@ function TurnStateProvider({ children }) {
     useEffect(() => {
         socket.on('established', establishState);
 
-        socket.on('player', ({  playersTurn }) => {
+        socket.on('player', ({ playersTurn }) => {
             setPlayersTurn(playersTurn);
         });
     }, [socket]);

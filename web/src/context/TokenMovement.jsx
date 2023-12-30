@@ -39,7 +39,7 @@ function TokenMovementProvider({ children }) {
     }
 
     function moveBonusToken(token, location, player = true) {
-        function onFinish () {
+        function onFinish() {
             updateAnimatedState({ [location.id]: undefined });
             finishMovement();
         }
@@ -57,7 +57,7 @@ function TokenMovementProvider({ children }) {
     function moveControlToken(side, destination) {
         const controlToken = { id: 'control', side };
 
-        function onFinish () {
+        function onFinish() {
             updateAnimatedState({
                 [destination.id]: controlToken,
             });

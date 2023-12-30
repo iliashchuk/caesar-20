@@ -1,5 +1,6 @@
-import { Socket } from "socket.io";
-import { User } from "../types.js";
+import { Socket } from 'socket.io';
+
+import { User } from '../types.js';
 
 type Connection = {
     socket: Socket;
@@ -11,7 +12,7 @@ export class GameConnectionManager {
 
     get allConnectionsOnline() {
         return Object.values(this.connections).every(
-            (connection) => connection.online
+            (connection) => connection.online,
         );
     }
 
