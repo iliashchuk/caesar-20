@@ -58,9 +58,12 @@ function TokenMovementProvider({ children }) {
         const controlToken = { id: 'control', side };
 
         function onFinish() {
-            updateAnimatedState({
-                [destination.id]: controlToken,
-            });
+            // remove the check when senate is done
+            if (!destination.id.includes('senate')) {
+                updateAnimatedState({
+                    [destination.id]: controlToken,
+                });
+            }
             finishMovement();
         }
 

@@ -1,5 +1,6 @@
 import { PROVINCES, borderProvincesDictionary } from '../static/provinces.js';
 import {
+    Bonus,
     ControlToken,
     LocationId,
     PlayerInfluence,
@@ -13,14 +14,16 @@ import {
     makeControlToken,
 } from '../utils.js';
 import { Province } from './Province.js';
+import { StateChangeManager } from './StateChangeManager.js';
 
 export class Map {
     provinces: Record<LocationId, Province> = {};
     borders: Record<LocationId, PlayerInfluence | ControlToken> = {};
-    unsortedStateChanges: StateChange[] = [];
+    stateChangeManager: StateChangeManager;
 
-    constructor() {
+    constructor(stateChangeManager: StateChangeManager) {
         const bonusByProvince = getRandomBonusesForProvinces();
+        this.stateChangeManager = stateChangeManager;
 
         for (let province of PROVINCES) {
             this.provinces[province] = new Province(
@@ -34,6 +37,7 @@ export class Map {
         token: PlayerInfluence,
         borderId: LocationId,
         establishControlBySide: (player: Side) => void,
+        activateBonus: (bonus: Bonus) => void,
     ) {
         const provinces = borderProvincesDictionary[borderId].map(
             (borderProvince) => this.provinces[borderProvince],
@@ -45,21 +49,12 @@ export class Map {
             province.tryCloseBorder(borderId, token);
 
             if (province.closed) {
-                this.unsortedStateChanges.push({
-                    type: StateChangeType.BONUS,
-                    token: makeBonusToken(province.bonus),
-                    location: province.id,
-                    side: province.closedBy,
-                });
+                this.stateChangeManager.getBonus(province);
+                activateBonus(province.bonus);
 
                 if (province.controlledBy) {
                     establishControlBySide(province.controlledBy);
-
-                    this.unsortedStateChanges.push({
-                        type: StateChangeType.CONTROL,
-                        location: province.id,
-                        side: province.controlledBy,
-                    });
+                    this.stateChangeManager.controlProvince(province);
 
                     let controlledBorders: LocationId[] = [];
 
@@ -81,12 +76,10 @@ export class Map {
                     if (controlledBorders.length) {
                         controlledBorders.forEach((border) => {
                             establishControlBySide(province.controlledBy);
-
-                            this.unsortedStateChanges.push({
-                                type: StateChangeType.CONTROL,
-                                location: border,
-                                side: province.controlledBy,
-                            });
+                            this.stateChangeManager.controlBorder(
+                                border,
+                                province.controlledBy,
+                            );
                         });
 
                         this.borders = {

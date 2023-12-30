@@ -1,9 +1,8 @@
 import {
+    Bonus,
     LocationId,
     PlayerInfluence,
     Side,
-    StateChange,
-    StateChangeType,
     Token,
     User,
 } from '../types.js';
@@ -12,6 +11,7 @@ import { GameConnectionManager } from './GameConnectionManager.js';
 import { Map } from './Map.js';
 import { Player } from './Player.js';
 import { Province } from './Province.js';
+import { StateChangeManager } from './StateChangeManager.js';
 
 export class Game {
     inProgress: boolean = false;
@@ -19,6 +19,7 @@ export class Game {
     playersBySide: Record<Side, Player>;
     opponents: Record<User, User> = {};
     connectionManager: GameConnectionManager = new GameConnectionManager();
+    stateChangeManager: StateChangeManager = new StateChangeManager();
     map: Map;
 
     get ready() {
@@ -45,27 +46,8 @@ export class Game {
         return { ...this.map.borders, ...provinceState };
     }
 
-    get stateChanges(): StateChange[] {
-        const changesWithBonusesFirst = this.map.unsortedStateChanges.sort(
-            (changeA, changeB) => {
-                if (changeB.type === StateChangeType.CONTROL) {
-                    if (changeA.type === StateChangeType.BONUS) {
-                        return -1;
-                    }
-
-                    //provinces first, then borders
-                    if (
-                        changeA.type === changeB.type &&
-                        !changeA.location.includes('-') &&
-                        changeB.location.includes('-')
-                    ) {
-                        return -1;
-                    }
-                }
-            },
-        );
-
-        return changesWithBonusesFirst;
+    get stateChanges() {
+        return this.stateChangeManager.stateChanges;
     }
 
     addOrReconnectPlayer = (user: User, socket) => {
@@ -81,8 +63,8 @@ export class Game {
         this.opponents[users[0]] = users[1];
         this.opponents[users[1]] = users[0];
 
-        const caesar = new Player(Side.CAESAR);
-        const pompey = new Player(Side.POMPEY);
+        const caesar = new Player(Side.CAESAR, this.stateChangeManager);
+        const pompey = new Player(Side.POMPEY, this.stateChangeManager);
         this.players[users[0]] = caesar;
         this.players[users[1]] = pompey;
 
@@ -93,7 +75,7 @@ export class Game {
 
     start() {
         this.inProgress = true;
-        this.map = new Map();
+        this.map = new Map(this.stateChangeManager);
         this.initPlayers();
     }
 
@@ -105,13 +87,64 @@ export class Game {
         user: User,
         { token, location }: { token: PlayerInfluence; location: LocationId },
     ): Province | void {
-        this.map.unsortedStateChanges = [];
+        this.stateChangeManager.resetChanges();
         const activePlayer = this.players[user];
-        activePlayer.endTurn(token.id);
-        this.getOpponentPlayer(user).playersTurn = true;
-        // this.placeToken(token, location);
-        this.map.placeTokenOnBorder(token, location, (side: Side) =>
-            this.playersBySide[side].establishControl(),
+
+        let tacticsPlayed = false;
+
+        const establishControlBySide = (side: Side) => {
+            this.playersBySide[side].establishControl();
+        };
+
+        // start bonus logic
+
+        function activateWealth() {
+            activePlayer.drawToHand();
+        }
+
+        function activateSenate() {
+            activePlayer.establishSenateControl();
+        }
+
+        function activateStrength() {}
+
+        function activateTactics() {
+            tacticsPlayed = true;
+        }
+
+        function activateBonus(bonus: Bonus) {
+            switch (bonus) {
+                case Bonus.WEALTH:
+                    activateWealth();
+                    break;
+                case Bonus.SENATE:
+                    activateSenate();
+                    break;
+                case Bonus.STRENGTH:
+                    activateStrength();
+                    break;
+                case Bonus.TACTICS:
+                    activateTactics();
+                    break;
+            }
+        }
+
+        // end bonus logic
+
+        this.map.placeTokenOnBorder(
+            token,
+            location,
+            establishControlBySide,
+            activateBonus,
         );
+
+        activePlayer.endTurn(token.id);
+
+        if (tacticsPlayed) {
+            activePlayer.playersTurn = true;
+            tacticsPlayed = false;
+        } else {
+            this.getOpponentPlayer(user).playersTurn = true;
+        }
     }
 }

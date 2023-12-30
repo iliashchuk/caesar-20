@@ -23,6 +23,10 @@ export function AnimatedToken({ origin, destination, token, onFinish }) {
 
         const { destination, token } = movement;
 
+        if (!destination?.angle) {
+            return;
+        }
+
         if (!token.turned) {
             return destination.angle;
         }

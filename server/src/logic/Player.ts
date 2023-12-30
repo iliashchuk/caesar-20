@@ -8,20 +8,24 @@ import {
     TokenId,
 } from '../types.js';
 import { shuffle } from '../utils.js';
+import { StateChangeManager } from './StateChangeManager.js';
 
 export class Player {
     side: Side;
     remainingTokens: PlayerInfluence[];
     hand: PlayerInfluence[] = [];
     playersTurn: boolean;
+    senate: number = 0;
     controls: number = 0;
+    stateChangeManager: StateChangeManager;
 
-    constructor(side: Side) {
+    constructor(side: Side, stateChangeManager: StateChangeManager) {
         this.side = side;
         this.remainingTokens = shuffle(genericInfluenceTokens).map((token) => ({
             ...token,
             side,
         }));
+        this.stateChangeManager = stateChangeManager;
 
         this.drawToHand();
         this.drawToHand();
@@ -50,6 +54,14 @@ export class Player {
 
     establishControl() {
         this.controls++;
+    }
+
+    establishSenateControl() {
+        this.senate++;
+        for (let i = 0; i < this.senate; i++) {
+            this.establishControl();
+            this.stateChangeManager.controlSenate(this.senate, this.side);
+        }
     }
 
     get clientData(): PlayerClientData {

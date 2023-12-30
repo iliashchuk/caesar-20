@@ -50,6 +50,7 @@ export type OpponentsClientData = ClientData & {
 export enum StateChangeType {
     BONUS = 'bonus',
     CONTROL = 'control',
+    SENATE = 'senate',
 }
 
 export type StateChange = {

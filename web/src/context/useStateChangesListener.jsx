@@ -1,6 +1,9 @@
 import { useContext, useEffect, useState } from 'react';
 
 import locations from '../static/locations.json';
+import playerSenateSlots from '../static/player-senate-slots.json';
+import opponentSenateSlots from '../static/opponent-senate-slots.json';
+
 import { GameContext } from './GameContext';
 import { TokenMovement } from './TokenMovement';
 
@@ -34,6 +37,16 @@ function useStateChangesListener() {
 
             if (type === 'control') {
                 moveControlToken(side, locations[location]);
+            }
+
+            if (type === 'senate') {
+                console.log(location);
+                const senateLocation = (
+                    side === playerSide
+                        ? playerSenateSlots
+                        : opponentSenateSlots
+                ).find(({ id }) => id === location);
+                moveControlToken(side, senateLocation);
             }
 
             setPendingStateChanges(pendingStateChanges.slice(1));
