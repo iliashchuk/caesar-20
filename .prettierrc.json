@@ -3,7 +3,6 @@
     "tabWidth": 4,
     "trailingComma": "all",
     "files.trimTrailingWhitespace": true,
-    "plugins": ["@trivago/prettier-plugin-sort-imports"],
     "importOrder": ["^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
     "importOrderSeparation": true,
     "importOrderSortSpecifiers": true
