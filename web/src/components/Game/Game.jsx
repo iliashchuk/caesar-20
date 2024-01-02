@@ -8,12 +8,14 @@ import {
     TokenMovementProvider,
     TokensProvider,
     TurnStateProvider,
+    GameContextProvider,
+    SizingProvider,
 } from '../../context';
 import { Map } from '../Map';
 import { TokenManager } from '../TokenManager';
 import styles from './Game.module.scss';
 
-export function Game() {
+const ActiveGameContent = () => {
     const { scale } = useContext(SizingContext);
     const { gameInProgress } = useContext(GameContext);
 
@@ -36,5 +38,15 @@ export function Game() {
                 <h1 className={styles.waiting}>Waiting for another player</h1>
             )}
         </div>
+    );
+};
+
+export function Game() {
+    return (
+        <SizingProvider>
+            <GameContextProvider>
+                <ActiveGameContent />
+            </GameContextProvider>
+        </SizingProvider>
     );
 }
